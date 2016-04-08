@@ -1,0 +1,5 @@
+#define CONFIG_LITTLE_ENDIAN	1
+#define CONFIG_CARD_E09A	1
+#define CONFIG_SCIF		1
+#define CONFIG_SH7709           1
+#define REMOTE_BREAK            1

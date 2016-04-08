@@ -1,0 +1,6 @@
+#define CONFIG_DVESH3		1
+#define CONFIG_SCI		1
+#define CONFIG_SH7708           1
+/* #define CONFIG_30MHZ            1 */
+#define CONFIG_60MHZ            1
+#define REMOTE_BREAK            1

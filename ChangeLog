@@ -1,0 +1,37 @@
+2002-03-20 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* sh-sci.c : IPRBの設定ミスを修正
+	
+2001-08-30 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* README : バンク0,1の記述ミスを修正
+	
+2001-03-09 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* Makefile : Sレコード形式が出力されるよう変更
+	             不必要な記述を変更
+	
+2001-03-05 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* 日立超LSIシステムズ製 MS7709ASE01のサポート
+	
+2001-03-01 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* 文字コードをEUCに修正
+	
+2000-11-24 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* README : 三菱電機マイコン機器ソフトウェアと修正
+	
+2000-11-11 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* README : ファイルの編集
+	* shcard から card-e09a に名前を変更
+	* ファイル名 config.h-XXX, config.mk-XXX init-XXX を
+	  config.h_XXX, config.mk_XXX init_XXX をに変更
+
+
+2000-11-10 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* sh-sci.h,entry.s : DVESH7700のSCIでのリモートブレークのサポート
+
+
+2000-11-9 Shinya Honda <honda@ertl.ics.tut.ac.jp>
+	* entry.S : スタックを使わないように変更、代りにバンク0の r0 を
+	  破壊する
+	* entry_non_scrach.S : 以前の entry.S をこのファイルに名前を変更
+
+	  
+	
