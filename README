@@ -2,196 +2,196 @@
 
 This program may be distributed under GNU Lesser GPL.
 
-1. ½é¤á¤Ë
-¤³¤Î¥×¥í¥°¥é¥à¤Ï SH3ÍÑ GDB stub ¤Ç¤¹¡£¥¿¡¼¥²¥Ã¥È¤Ç¼Â¹Ô¤¹¤ë¤³¤È¤Ë¤è¤ê¥·
-¥ê¥¢¥ë·ÐÍ³¤Ç¥Û¥¹¥È¤Ç¼Â¹Ô¤¹¤ëgdb¤Ë¤è¤ë¥À¥¦¥ó¥í¡¼¥É¡¢¥ê¥â¡¼¥È¥Ç¥Ð¥Ã¥°¤¬
-²ÄÇ½¤Ç¤¹¡£¤³¤Î¥×¥í¥°¥é¥à¤Î¥ª¥ê¥¸¥Ê¥ë¤Ï Linux SH ¥×¥í¥¸¥§¥¯¥È
-(http://www.m17n.org/linux-sh/)¤Ç³«È¯¤µ¤ì¤¿¤â¤Î¤Ç¤¢¤ê¡¢¤³¤ì¤ò¸µ¤Ë 
-TOPPERS/JSP ¥«¡¼¥Í¥ë ¤ò¥µ¥Ý¡¼¥È¤¹¤ë¤¿¤á¤ÎÊÑ¹¹¤ò¹Ô¤¤¤Þ¤·¤¿¡£¤Ê¤ª¡¢³«È¯
-´Ä¶­¤Î¥¤¥ó¥¹¥È¡¼¥ë¤Ë´Ø¤·¤Æ¤Ï TOPPERS ¤Î¥Þ¥Ë¥å¥¢¥ë¤ò»²¾È¤·¤Æ¤¯¤À¤µ¤¤¡£
-¥é¥¤¥»¥ó¥¹¤ÏGNUGPL ¤Ë¤Ê¤Ã¤Æ¤¤¤Þ¤¹¡£
+1. ‰‚ß‚É
+‚±‚ÌƒvƒƒOƒ‰ƒ€‚Í SH3—p GDB stub ‚Å‚·Bƒ^[ƒQƒbƒg‚ÅŽÀs‚·‚é‚±‚Æ‚É‚æ‚èƒV
+ƒŠƒAƒ‹Œo—R‚ÅƒzƒXƒg‚ÅŽÀs‚·‚égdb‚É‚æ‚éƒ_ƒEƒ“ƒ[ƒhAƒŠƒ‚[ƒgƒfƒoƒbƒO‚ª
+‰Â”\‚Å‚·B‚±‚ÌƒvƒƒOƒ‰ƒ€‚ÌƒIƒŠƒWƒiƒ‹‚Í Linux SH ƒvƒƒWƒFƒNƒg
+(http://www.m17n.org/linux-sh/)‚ÅŠJ”­‚³‚ê‚½‚à‚Ì‚Å‚ ‚èA‚±‚ê‚ðŒ³‚É 
+TOPPERS/JSP ƒJ[ƒlƒ‹ ‚ðƒTƒ|[ƒg‚·‚é‚½‚ß‚Ì•ÏX‚ðs‚¢‚Ü‚µ‚½B‚È‚¨AŠJ”­
+ŠÂ‹«‚ÌƒCƒ“ƒXƒg[ƒ‹‚ÉŠÖ‚µ‚Ä‚Í TOPPERS ‚Ìƒ}ƒjƒ…ƒAƒ‹‚ðŽQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+ƒ‰ƒCƒZƒ“ƒX‚ÍGNUGPL ‚É‚È‚Á‚Ä‚¢‚Ü‚·B
 
-¥µ¥Ý¡¼¥È¤·¤Æ¤¤¤ëCPU ¤Ï¡¢SH7708,SH7709,SH7709A¤Ç¡¢¥µ¥Ý¡¼¥È¤·¤Æ¤¤¤ë¥¿¡¼¥²¥Ã¥È
-¤Ï¡¢°Ê²¼¤Î4¼ïÎà¤Ç¤¹¡£
+ƒTƒ|[ƒg‚µ‚Ä‚¢‚éCPU ‚ÍASH7708,SH7709,SH7709A‚ÅAƒTƒ|[ƒg‚µ‚Ä‚¢‚éƒ^[ƒQƒbƒg
+‚ÍAˆÈ‰º‚Ì4Ží—Þ‚Å‚·B
 
-¡¦EPSONÀ½ CARD-E09A (SH7709A)
-¡¦»°É©ÅÅµ¡¥Þ¥¤¥³¥óµ¡´ï¥½¥Õ¥È¥¦¥¨¥¢À½ MU200-RSH3 (SH7709)
-¡¦ÅÅ»ºÀ½ DVE7700 (SH7708)
-¡¦ÆüÎ©Ä¶LSI¥·¥¹¥Æ¥à¥ºÀ½ MS7709ASE01 (SH7709A)
-
-
-
-2. stub¤Î³µÍ×
-2.1 ¥ï¡¼¥¯ÎÎ°è
-stub¤ÏRAM¤Î°ìÉô¤ò¥ï¡¼¥¯ÎÎ°è¤È¤·¤Æ»ÈÍÑ¤·¤Þ¤¹¡£¤³¤ÎÎÎ°è¤Ï¥×¥í¥°¥é¥à¤Ç»È
-ÍÑ¤Ê¤¤¤Ç¤¯¤À¤µ¤¤¡£¥¿¡¼¥²¥Ã¥ÈËè¤Î»ÈÍÑÎÎ°è¤Ï¡¢
-
-¡¦CARD-E09A     0x0C030000 ¡Á 0x0C033000
-¡¦MU200-RSH3    0x0C000000 ¡Á 0x0C001000
-¡¦DVE7700 	    0x0C000000 ¡Á 0x0C001000
-¡¦MS7709ASE01   0x0C000000 ¡Á 0x0C001000
-
-¤Ç¤¹¡£¤Ê¤ª¡¢¤³¤Î¥ï¡¼¥¯¥¨¥ê¥¢¤ÎÀßÄê¤ÏXXX.mem¥Õ¥¡¥¤¥ë¤ÎRAM¤Ç»Ï¤Þ¤ë¹Ô¤ÇÊÑ
-¹¹²ÄÇ½¤Ç¤¹¡£
+EEPSON» CARD-E09A (SH7709A)
+EŽO•H“d‹@ƒ}ƒCƒRƒ“‹@Šíƒ\ƒtƒgƒEƒGƒA» MU200-RSH3 (SH7709)
+E“dŽY» DVE7700 (SH7708)
+E“ú—§’´LSIƒVƒXƒeƒ€ƒY» MS7709ASE01 (SH7709A)
 
 
-2.2 »ÈÍÑ¥Ý¡¼¥È¤ÈÀßÄê
-¥Û¥¹¥È¤Îgdb¤ÈÄÌ¿®¤ò¹Ô¤¦¥Ý¡¼¥È¤È¥Ü¡¼¥ì¡¼¥È¤Ï¡¢¼¡¤Î¤è¤¦¤Ë¤Ê¤ê¤Þ¤¹¡£Á´¤Æ
-¤Î¥¿¡¼¥²¥Ã¥È¤Ë¤ª¤¤¤Æ ¥Ç¡¼¥¿:8bit, ¥Ñ¥ê¥Æ¥£:Ìµ¤· ¥¹¥È¥Ã¥×¥Ó¥Ã¥È: 1bit 
-¤Ç¤¹¡£
 
-             »ÈÍÑ¥Ý¡¼¥È   ¥Ü¡¼¥ì¡¼¥È
-¡¦CARD-E09A     SCIF       115200bps
-¡¦MU200-RSH3    SCIF       115200bps
-¡¦DVE7700    	SCI         57600bps
-¡¦MS7709ASE01   SCIF       115200bps
+2. stub‚ÌŠT—v
+2.1 ƒ[ƒN—Ìˆæ
+stub‚ÍRAM‚Ìˆê•”‚ðƒ[ƒN—Ìˆæ‚Æ‚µ‚ÄŽg—p‚µ‚Ü‚·B‚±‚Ì—Ìˆæ‚ÍƒvƒƒOƒ‰ƒ€‚ÅŽg
+—p‚È‚¢‚Å‚­‚¾‚³‚¢Bƒ^[ƒQƒbƒg–ˆ‚ÌŽg—p—Ìˆæ‚ÍA
+
+ECARD-E09A     0x0C030000 ` 0x0C033000
+EMU200-RSH3    0x0C000000 ` 0x0C001000
+EDVE7700 	    0x0C000000 ` 0x0C001000
+EMS7709ASE01   0x0C000000 ` 0x0C001000
+
+‚Å‚·B‚È‚¨A‚±‚Ìƒ[ƒNƒGƒŠƒA‚ÌÝ’è‚ÍXXX.memƒtƒ@ƒCƒ‹‚ÌRAM‚ÅŽn‚Ü‚és‚Å•Ï
+X‰Â”\‚Å‚·B
 
 
-2.3 trapa¤Ë¤è¤ëµ¡Ç½
-trapa #0x3f ¤ò¼Â¹Ô¤¹¤ë¤³¤È¤Ë¤è¤êstub¤Îµ¡Ç½¤ò¸Æ¤Ó½Ð¤·¤Þ¤¹¡£
+2.2 Žg—pƒ|[ƒg‚ÆÝ’è
+ƒzƒXƒg‚Ìgdb‚Æ’ÊM‚ðs‚¤ƒ|[ƒg‚Æƒ{[ƒŒ[ƒg‚ÍAŽŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B‘S‚Ä
+‚Ìƒ^[ƒQƒbƒg‚É‚¨‚¢‚Ä ƒf[ƒ^:8bit, ƒpƒŠƒeƒB:–³‚µ ƒXƒgƒbƒvƒrƒbƒg: 1bit 
+‚Å‚·B
 
-2.3.1 gdb¤Î¥³¥ó¥½¡¼¥ë¤Ø¤Î½ÐÎÏ
-r0 ¤Ë0x00, r4 ¤Ë½ÐÎÏ¤·¤¿¤¤Ê¸»ú¤òÆþ¤ì trapa #0x3f ¤ò¼Â¹Ô¤¹¤ë¤È¤½¤ÎÊ¸»ú
-¤¬¥Û¥¹¥È¤Î gdb¤Î¥³¥ó¥½¡¼¥ë¤Ë½ÐÎÏ¤µ¤ì¤Þ¤¹¡£¤³¤Î½ÐÎÏ¤Ï¥¿¡¼¥²¥Ã¥È¤¬¥Ö¥ì¡¼
-¥¯¤·¤¿»þÅÀ¤Çgdb¤Î¥³¥ó¥½¡¼¥ë¤Ë½ÐÎÏ¤µ¤ì¤Þ¤¹¤¬¡¢¥ê¥¢¥ë¥¿¥¤¥à¤Ë½ÐÎÏ¤·¤¿¤¤
-¾ì¹ç¤Ï¡¢gdb¤Î¥½¡¼¥¹¤òÅ¸³«¤·¤¿¥¤¥ó¥¹¥È¡¼¥ë¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê°Ê²¼¤Î
-/gdb/remote.c ¤Ë¤¢¤ë´Ø¿ôremote_console_output()¤Î
+             Žg—pƒ|[ƒg   ƒ{[ƒŒ[ƒg
+ECARD-E09A     SCIF       115200bps
+EMU200-RSH3    SCIF       115200bps
+EDVE7700    	SCI         57600bps
+EMS7709ASE01   SCIF       115200bps
+
+
+2.3 trapa‚É‚æ‚é‹@”\
+trapa #0x3f ‚ðŽÀs‚·‚é‚±‚Æ‚É‚æ‚èstub‚Ì‹@”\‚ðŒÄ‚Ño‚µ‚Ü‚·B
+
+2.3.1 gdb‚ÌƒRƒ“ƒ\[ƒ‹‚Ö‚Ìo—Í
+r0 ‚É0x00, r4 ‚Éo—Í‚µ‚½‚¢•¶Žš‚ð“ü‚ê trapa #0x3f ‚ðŽÀs‚·‚é‚Æ‚»‚Ì•¶Žš
+‚ªƒzƒXƒg‚Ì gdb‚ÌƒRƒ“ƒ\[ƒ‹‚Éo—Í‚³‚ê‚Ü‚·B‚±‚Ìo—Í‚Íƒ^[ƒQƒbƒg‚ªƒuƒŒ[
+ƒN‚µ‚½Žž“_‚Ågdb‚ÌƒRƒ“ƒ\[ƒ‹‚Éo—Í‚³‚ê‚Ü‚·‚ªAƒŠƒAƒ‹ƒ^ƒCƒ€‚Éo—Í‚µ‚½‚¢
+ê‡‚ÍAgdb‚Ìƒ\[ƒX‚ð“WŠJ‚µ‚½ƒCƒ“ƒXƒg[ƒ‹‚µ‚½ƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚Ì
+/gdb/remote.c ‚É‚ ‚éŠÖ”remote_console_output()‚Ì
 
      else
         fputs_filtered (tb, gdb_stdout);
 
-¤Î²Õ½ê¤ò
+‚Ì‰ÓŠ‚ð
 
       else {
         fputs_filtered (tb, gdb_stdout);
         gdb_flush(gdb_stdout);
      }
 
-¤ÈÊÑ¹¹¤·¤Þ¤¹¡¥
+‚Æ•ÏX‚µ‚Ü‚·D
 
 
 
-2.3.2 Îã³°/³ä¤ê¹þ¤ß¤ÎÅÐÏ¿
-SH3 ¤ÎÎã³°µ¡¹½¤Ï¥Ù¥¯¥¿Êý¼°¤Ç¤Ï¤Ê¤¯¡¢Îã³°/³ä¤ê¹þ¤ß¤¬È¯À¸¤¹¤ë¤È VBR
-+0x100,¤â¤·¤¯¤Ï +0x600 ÈÖÃÏ¤«¤é¼Â¹Ô¤ò³«»Ï¤·¤Þ¤¹¡£¤½¤Î¤¿¤á¡¢stub¤Ïµ¼»÷
-Åª¤Ê¥Ù¥¯¥¿¥Æ¡¼¥Ö¥ë¤ò»ý¤ÁÎã³°/³ä¤ê¹þ¤ß¤¬È¯À¸¤¹¤ë¤È¤½¤ÎÍ×°ø¤òÈ½Äê¤·¤Æ¤³
-¤Î¥Æ¡¼¥Ö¥ë¤ËÅÐÏ¿¤µ¤ì¤¿ÈÖÃÏ¤è¤ê¼Â¹Ô¤ò³«»Ï¤·¤Þ¤¹¡£¤³¤Î¥Ù¥¯¥¿¥Æ¡¼¥Ö¥ë¤Ï 
-RAM ¾å¤ËÃÖ¤«¤ì¤Æ¤¤¤ë¤¿¤á¡¢¥æ¡¼¥¶¡¼¥×¥í¥°¥é¥à¤Ç¼õ¤±¼è¤ê¤¿¤¤Îã³°/³ä¤ê¹þ
-¤ß¤È¤½¤Î¥Ï¥ó¥É¥é¤òÅÐÏ¿¤Ç¤­¤Þ¤¹¡£ÅÐÏ¿¤Ï¡¢r0 ¤Ë 0x08, r4 ¤ËÎã³°Í×°øÈÖ¹æ
-(SH7709/A ¤Ê¤é INTEVT2, SH7708 ¤Ê¤é INTEV T¤ËÀßÄê¤µ¤ì¤ëÈÖ¹æ), r5 ¤Ë¥Ï
-¥ó¥É¥é¤Î¥¢¥É¥ì¥¹¤òÆþ¤ì¤Æ trapa #0x3f ¤ò¼Â¹Ô¤·¤Þ¤¹¡£ÅÐÏ¿¤µ¤ì¤¿¥Ï¥ó¥É¥é
-¼Â¹Ô»þ¤Î¾õÂÖ¤Ï VBR +0x400, +0x600 ¤ËÇÛÃÖ¤·¤¿¥×¥í¥°¥é¥à¤¬CPU¼Â¹Ô¤µ¤ì¤ë
-¾õÂÖ¤ÈÆ±¤¸¤Ç¤¹¡£¤Ê¤ª¡¢VBR¤òÊÑ¹¹¤·¤¿¤ê¡¢stub ¤¬»ÈÍÑ¤¹¤ëÎã³°/³ä¤ê¹þ¤ß
-(nmi,trapa,SCIÅù)¤òÊÑ¹¹¤¹¤ë¤Èstub¤¬Àµ¤·¤¯Æ°ºî¤·¤Ê¤¯¤Ê¤ë¤Î¤Ç¡¢Ãí°Õ¤·¤Æ
-¤¯¤À¤µ¤¤¡£
+2.3.2 —áŠO/Š„‚èž‚Ý‚Ì“o˜^
+SH3 ‚Ì—áŠO‹@\‚ÍƒxƒNƒ^•ûŽ®‚Å‚Í‚È‚­A—áŠO/Š„‚èž‚Ý‚ª”­¶‚·‚é‚Æ VBR
++0x100,‚à‚µ‚­‚Í +0x600 ”Ô’n‚©‚çŽÀs‚ðŠJŽn‚µ‚Ü‚·B‚»‚Ì‚½‚ßAstub‚Í‹[Ž—
+“I‚ÈƒxƒNƒ^ƒe[ƒuƒ‹‚ðŽ‚¿—áŠO/Š„‚èž‚Ý‚ª”­¶‚·‚é‚Æ‚»‚Ì—vˆö‚ð”»’è‚µ‚Ä‚±
+‚Ìƒe[ƒuƒ‹‚É“o˜^‚³‚ê‚½”Ô’n‚æ‚èŽÀs‚ðŠJŽn‚µ‚Ü‚·B‚±‚ÌƒxƒNƒ^ƒe[ƒuƒ‹‚Í 
+RAM ã‚É’u‚©‚ê‚Ä‚¢‚é‚½‚ßAƒ†[ƒU[ƒvƒƒOƒ‰ƒ€‚ÅŽó‚¯Žæ‚è‚½‚¢—áŠO/Š„‚èž
+‚Ý‚Æ‚»‚Ìƒnƒ“ƒhƒ‰‚ð“o˜^‚Å‚«‚Ü‚·B“o˜^‚ÍAr0 ‚É 0x08, r4 ‚É—áŠO—vˆö”Ô†
+(SH7709/A ‚È‚ç INTEVT2, SH7708 ‚È‚ç INTEV T‚ÉÝ’è‚³‚ê‚é”Ô†), r5 ‚Éƒn
+ƒ“ƒhƒ‰‚ÌƒAƒhƒŒƒX‚ð“ü‚ê‚Ä trapa #0x3f ‚ðŽÀs‚µ‚Ü‚·B“o˜^‚³‚ê‚½ƒnƒ“ƒhƒ‰
+ŽÀsŽž‚Ìó‘Ô‚Í VBR +0x400, +0x600 ‚É”z’u‚µ‚½ƒvƒƒOƒ‰ƒ€‚ªCPUŽÀs‚³‚ê‚é
+ó‘Ô‚Æ“¯‚¶‚Å‚·B‚È‚¨AVBR‚ð•ÏX‚µ‚½‚èAstub ‚ªŽg—p‚·‚é—áŠO/Š„‚èž‚Ý
+(nmi,trapa,SCI“™)‚ð•ÏX‚·‚é‚Æstub‚ª³‚µ‚­“®ì‚µ‚È‚­‚È‚é‚Ì‚ÅA’ˆÓ‚µ‚Ä
+‚­‚¾‚³‚¢B
 
 
-2.4 gdb¤Ë¤è¤ë¥·¥ê¥¢¥ë·ÐÍ³¤Î¥Ö¥ì¡¼¥¯
-¥¿¡¼¥²¥Ã¥È¤Ç¥×¥í¥°¥é¥à¤ò¼Â¹ÔÃæ¤Ë gdb ¾å¤Ç ctrl-C ¤ò²¡¤¹¤È¥Ö¥ì¡¼¥¯¤¬¤«
-¤«¤ê¤Þ¤¹¡£¤³¤Îµ¡Ç½¤Ï¡¢gdb ¤ÈÄÌ¿®¤ò¹Ô¤¦¥·¥ê¥¢¥ë¥Ý¡¼¥È¤Î¼õ¿®³ä¤ê¹þ¤ß¤Ë¤è
-¤ê¼Â¸½¤·¤Æ¤¤¤Þ¤¹¡£¤³¤Î³ä¤ê¹þ¤ß¤ÎÍ¥ÀèÅÙ¤Ï 0xf ¤ËÀßÄê¤·¤Þ¤¹¡£¤³¤Îµ¡Ç½¤ò
-»ÈÍÑ¤¹¤ë¤¿¤á¤Ë¤Ï¡¢¥×¥í¥°¥é¥à¼Â¹ÔÃæ¤Î³ä¤ê¹þ¤ß¥Þ¥¹¥¯¤ÎÃÍ¤ò 0xe °Ê²¼¤ËÀß
-Äê¤·¤Æ¤¯¤À¤µ¤¤¡£
+2.4 gdb‚É‚æ‚éƒVƒŠƒAƒ‹Œo—R‚ÌƒuƒŒ[ƒN
+ƒ^[ƒQƒbƒg‚ÅƒvƒƒOƒ‰ƒ€‚ðŽÀs’†‚É gdb ã‚Å ctrl-C ‚ð‰Ÿ‚·‚ÆƒuƒŒ[ƒN‚ª‚©
+‚©‚è‚Ü‚·B‚±‚Ì‹@”\‚ÍAgdb ‚Æ’ÊM‚ðs‚¤ƒVƒŠƒAƒ‹ƒ|[ƒg‚ÌŽóMŠ„‚èž‚Ý‚É‚æ
+‚èŽÀŒ»‚µ‚Ä‚¢‚Ü‚·B‚±‚ÌŠ„‚èž‚Ý‚Ì—Dæ“x‚Í 0xf ‚ÉÝ’è‚µ‚Ü‚·B‚±‚Ì‹@”\‚ð
+Žg—p‚·‚é‚½‚ß‚É‚ÍAƒvƒƒOƒ‰ƒ€ŽÀs’†‚ÌŠ„‚èž‚Ýƒ}ƒXƒN‚Ì’l‚ð 0xe ˆÈ‰º‚ÉÝ
+’è‚µ‚Ä‚­‚¾‚³‚¢B
 
 
-2.5 ¥ì¥¸¥¹¥¿¤Î¼è¤ê°·¤¤
-Îã³°/³ä¤ê¹þ¤ßÈ¯À¸¤Ë¼Â¹Ô¤µ¤ì¤ë¥ë¡¼¥Á¥ó¤Ïentry.S¤Ëµ­½Ò¤·¤Æ¤¤¤Þ¤¹¤¬¡¢r0 
-¡Á r7 ¤Î¥Ð¥ó¥¯¥ì¥¸¥¹¥¿¤Î»ÈÍÑÊýË¡¤¬°Û¤Ê¤ë entry_non_scrach.S ¤âÍÑ°Õ¤·¤Æ
-¤¤¤Þ¤¹¡£entry.S ¤Ç¤Ï¡¢¥×¥í¥°¥é¥à¤Ç¤Ï¡¢¾ï¤Ë¥Ð¥ó¥¯0¤ò»ÈÍÑ¤¹¤ë¤â¤Î¤ÈÁÛÄê
-¤·¤Æ gdb ¤Ë¥Ð¥ó¥¯0¤Î¥ì¥¸¥¹¥¿¤òÁ÷¤ê¤Þ¤¹¡£entry_non_scrach.S ¤Ï¥Ð¥ó¥¯1¤â
-»ÈÍÑ¤¹¤ë¤³¤È¤òÁÛÄê¤·¤Æ¡¢Îã³°/³ä¤ê¹þ¤ßÈ¯À¸»þ¤Ë¥¢¥¯¥Æ¥£¥Ö¤Ê¥Ð¥ó¥¯¤Î¥ì¥¸
-¥¹¥¿¤ò gdb ¤ËÁ÷¤ê¤Þ¤¹¡£¥ì¥¸¥¹¥¿¤Ï¥Ð¥ó¥¯0,1 ¶¦¤ËÇË²õ¤·¤Þ¤»¤ó¡£¤½¤ÎÂå¤ê
-Îã³°/³ä¤ê¹þ¤ßÈ¯À¸»þ¤Î¥¹¥¿¥Ã¥¯¤ò¥ì¥¸¥¹¥¿¤ÎÂàÈò¤Î¤¿¤á¡¢°ì»þÅª¤Ë»ÈÍÑ¤¹¤ë
-¤¿¤á¡¢¥¹¥¿¥Ã¥¯¥Ý¥¤¥ó¥¿¤ÎÀßÄê¤ò¸í¤ë¤È¥ê¥»¥Ã¥È¤µ¤ì¤Þ¤¹¡£entry.S ¤Ç¤Ï¥¹¥¿¥Ã
-¥¯Âå¤ê¤Ë ¥Ð¥ó¥¯1¤Î r0,r1 ¥ì¥¸¥¹¥¿¤ò»ÈÍÑ¤¹¤ë¤¿¤á¡¢¥¹¥¿¥Ã¥¯¥Ý¥¤¥ó¥¿¤ÎÀß
-Äê¥ß¥¹¤¬È¯À¸¤·¤Æ¤â¥ê¥»¥Ã¥È¤µ¤ì¤Þ¤»¤ó¤¬¡¢¥Ð¥ó¥¯1 ¤Î¥ì¥¸¥¹¥¿ r0,r1 ¤¬ÇË
-²õ¤µ¤ì¤ë¤Î¤Ç¡¢Ãí°Õ¤¬É¬Í×¤Ç¤¹¡£
+2.5 ƒŒƒWƒXƒ^‚ÌŽæ‚èˆµ‚¢
+—áŠO/Š„‚èž‚Ý”­¶‚ÉŽÀs‚³‚ê‚éƒ‹[ƒ`ƒ“‚Íentry.S‚É‹Lq‚µ‚Ä‚¢‚Ü‚·‚ªAr0 
+` r7 ‚Ìƒoƒ“ƒNƒŒƒWƒXƒ^‚ÌŽg—p•û–@‚ªˆÙ‚È‚é entry_non_scrach.S ‚à—pˆÓ‚µ‚Ä
+‚¢‚Ü‚·Bentry.S ‚Å‚ÍAƒvƒƒOƒ‰ƒ€‚Å‚ÍAí‚Éƒoƒ“ƒN0‚ðŽg—p‚·‚é‚à‚Ì‚Æ‘z’è
+‚µ‚Ä gdb ‚Éƒoƒ“ƒN0‚ÌƒŒƒWƒXƒ^‚ð‘—‚è‚Ü‚·Bentry_non_scrach.S ‚Íƒoƒ“ƒN1‚à
+Žg—p‚·‚é‚±‚Æ‚ð‘z’è‚µ‚ÄA—áŠO/Š„‚èž‚Ý”­¶Žž‚ÉƒAƒNƒeƒBƒu‚Èƒoƒ“ƒN‚ÌƒŒƒW
+ƒXƒ^‚ð gdb ‚É‘—‚è‚Ü‚·BƒŒƒWƒXƒ^‚Íƒoƒ“ƒN0,1 ‹¤‚É”j‰ó‚µ‚Ü‚¹‚ñB‚»‚Ì‘ã‚è
+—áŠO/Š„‚èž‚Ý”­¶Žž‚ÌƒXƒ^ƒbƒN‚ðƒŒƒWƒXƒ^‚Ì‘Þ”ð‚Ì‚½‚ßAˆêŽž“I‚ÉŽg—p‚·‚é
+‚½‚ßAƒXƒ^ƒbƒNƒ|ƒCƒ“ƒ^‚ÌÝ’è‚ðŒë‚é‚ÆƒŠƒZƒbƒg‚³‚ê‚Ü‚·Bentry.S ‚Å‚ÍƒXƒ^ƒb
+ƒN‘ã‚è‚É ƒoƒ“ƒN1‚Ì r0,r1 ƒŒƒWƒXƒ^‚ðŽg—p‚·‚é‚½‚ßAƒXƒ^ƒbƒNƒ|ƒCƒ“ƒ^‚ÌÝ
+’èƒ~ƒX‚ª”­¶‚µ‚Ä‚àƒŠƒZƒbƒg‚³‚ê‚Ü‚¹‚ñ‚ªAƒoƒ“ƒN1 ‚ÌƒŒƒWƒXƒ^ r0,r1 ‚ª”j
+‰ó‚³‚ê‚é‚Ì‚ÅA’ˆÓ‚ª•K—v‚Å‚·B
 
 
 2.6 NMI
-Á´¤Æ¤Î¥¿¡¼¥²¥Ã¥È¤Ë¤ª¤¤¤ÆNMIÆþÎÏ¤Ë¤è¤ë¥Ö¥ì¡¼¥¯¤ò¥µ¥Ý¡¼¥È¤·¤Æ¤¤¤Þ¤¹¡£
+‘S‚Ä‚Ìƒ^[ƒQƒbƒg‚É‚¨‚¢‚ÄNMI“ü—Í‚É‚æ‚éƒuƒŒ[ƒN‚ðƒTƒ|[ƒg‚µ‚Ä‚¢‚Ü‚·B
 
 
-2.7 Â¾¤Î¥¿¡¼¥²¥Ã¥È¤Ø¤Î°Ü¿¢
-Â¾¤Î¥¿¡¼¥²¥Ã¥È¤Ø¤Î°Ü¿¢¤Ï¡¢SH3¤¬³Æ¼ï¥â¥¸¥å¡¼¥ë¤òÆâÂ¢¤·¤Æ¤¤¤ë¤³¤È¤â¤¢¤ê¡¢
-Èæ³ÓÅªÍÆ°×¤Ë¹Ô¤¨¤ë¤È»×¤¤¤Þ¤¹¡£¶ñÂÎÅª¤Ë¤Ï°Ê²¼¤Î¥Õ¥¡¥¤¥ë¤ò¥¿¡¼¥²¥Ã¥ÈÍÑ¤Ë
-½ñ¤­¤Þ¤¹¡£
+2.7 ‘¼‚Ìƒ^[ƒQƒbƒg‚Ö‚ÌˆÚA
+‘¼‚Ìƒ^[ƒQƒbƒg‚Ö‚ÌˆÚA‚ÍASH3‚ªŠeŽíƒ‚ƒWƒ…[ƒ‹‚ð“à‘ ‚µ‚Ä‚¢‚é‚±‚Æ‚à‚ ‚èA
+”äŠr“I—eˆÕ‚És‚¦‚é‚ÆŽv‚¢‚Ü‚·B‹ï‘Ì“I‚É‚ÍˆÈ‰º‚Ìƒtƒ@ƒCƒ‹‚ðƒ^[ƒQƒbƒg—p‚É
+‘‚«‚Ü‚·B
 
-init_XXX.S     : ¥Ï¡¼¥É¥¦¥§¥¢½é´ü²½¥ë¡¼¥Á¥ó
-XXX.mem        : ¥á¥â¥ê¥Þ¥Ã¥×
-config.h_XXX   : ¥³¥ó¥Õ¥£¥°¥Õ¥¡¥¤¥ë
-config.mk_XXX  : ¥á¥¤¥¯¥Õ¥¡¥¤¥ë
+init_XXX.S     : ƒn[ƒhƒEƒFƒA‰Šú‰»ƒ‹[ƒ`ƒ“
+XXX.mem        : ƒƒ‚ƒŠƒ}ƒbƒv
+config.h_XXX   : ƒRƒ“ƒtƒBƒOƒtƒ@ƒCƒ‹
+config.mk_XXX  : ƒƒCƒNƒtƒ@ƒCƒ‹
 
-¸å¡¢sh-sci.c ¤Ë¥Ü¡¼¥ì¡¼¥È¤ò·èÄê¤¹¤ë SCBRR ¥ì¥¸¥¹¥¿¤ÎÀßÄêÃÍ¤È sh-stub.ld.S
-¤ÇXXX.mem¥Õ¥¡¥¤¥ë¤ò¥¤¥ó¥¯¥ë¡¼¥É¤¹¤ë¤è¤¦¤ËÊÑ¹¹¤·¤Þ¤¹¡£
+ŒãAsh-sci.c ‚Éƒ{[ƒŒ[ƒg‚ðŒˆ’è‚·‚é SCBRR ƒŒƒWƒXƒ^‚ÌÝ’è’l‚Æ sh-stub.ld.S
+‚ÅXXX.memƒtƒ@ƒCƒ‹‚ðƒCƒ“ƒNƒ‹[ƒh‚·‚é‚æ‚¤‚É•ÏX‚µ‚Ü‚·B
 
 
 
-3. ¥¤¥ó¥¹¥È¡¼¥ë
+3. ƒCƒ“ƒXƒg[ƒ‹
 
-s3.1 stub¤ÎºîÀ®
-sh-stub.tar.gz¤òÅ¸³«¤·¥¿¡¼¥²¥Ã¥È¤Ë±þ¤¸¤¿ config.h_XXX, config.mk_XXX 
-¥Õ¥¡¥¤¥ë¤ò¤½¤ì¤¾¤ì¡¢config.h, config.mk ¤È¤¹¤ë¡£
+s3.1 stub‚Ìì¬
+sh-stub.tar.gz‚ð“WŠJ‚µƒ^[ƒQƒbƒg‚É‰ž‚¶‚½ config.h_XXX, config.mk_XXX 
+ƒtƒ@ƒCƒ‹‚ð‚»‚ê‚¼‚êAconfig.h, config.mk ‚Æ‚·‚éB
 
    %cp config.h_XXX config.h
    %cp config.mk_XXX config.mk
 
-sh-stub.tar.gz¤òÅ¸³«¤·¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Ç
+sh-stub.tar.gz‚ð“WŠJ‚µ‚½ƒfƒBƒŒƒNƒgƒŠ‚Å
    
    %make
 
-¤È¤¹¤ë¤È¡¢ELF·Á¼°¤Î sh-stub ¤È¥Ð¥¤¥Ê¥ê¤Îsh-stub.bin¤¬À¸À®¤µ¤ì¤Þ¤¹¡£Â¾
-¤Î·Á¼°¤òºîÀ®¤¹¤ë¤Ë¤Ï¡¤
+‚Æ‚·‚é‚ÆAELFŒ`Ž®‚Ì sh-stub ‚ÆƒoƒCƒiƒŠ‚Ìsh-stub.bin‚ª¶¬‚³‚ê‚Ü‚·B‘¼
+‚ÌŒ`Ž®‚ðì¬‚·‚é‚É‚ÍC
 
-make sh-stub.hex  : ¥¤¥ó¥Æ¥ëHEX¥Õ¥©¡¼¥Þ¥Ã¥È¤òºîÀ®
-make sh-stub.src  : ¥â¥È¥í¡¼¥éS¥ì¥³¡¼¥É¥Õ¥©¡¼¥Þ¥Ã¥È¤òºîÀ®
+make sh-stub.hex  : ƒCƒ“ƒeƒ‹HEXƒtƒH[ƒ}ƒbƒg‚ðì¬
+make sh-stub.src  : ƒ‚ƒgƒ[ƒ‰SƒŒƒR[ƒhƒtƒH[ƒ}ƒbƒg‚ðì¬
 
-¤È¤·¤Þ¤¹¡¥¤³¤ì°Ê³°¤Î¥Õ¥©¡¼¥Þ¥Ã¥È¤Ç½ÐÎÏ¤·¤¿¤¤¾ì¹ç¤Ï¡¤
-sh-hitachi-elf-objdump ¤ÇÊÑ´¹¤·¤Æ¤¯¤À¤µ¤¤¡£¤³¤Î¥Õ¥¡¥¤¥ë¤òRSH3,DVE7700
-¤ÏROM¤Ë¾Æ¤¤¤Æ¼ÂÁõ¤·¤Þ¤¹¡£MS7709ASE01¤Ï¡¤¥Ü¡¼¥É¤ËÉÕÂ°¤·¤Æ¤¤¤ëROM¥â¥Ë¥¿
-¤Ç¥Õ¥é¥Ã¥·¥å¤ÎÀèÆ¬¤Ë½ñ¤­¤Þ¤¹¡¥ROM¥â¥Ë¥¿¤Ç¤Î½ñ¤­¹þ¤ß¤Ë´Ø¤·¤Æ¤Ï¡¤¥Ü¡¼¥É
-¤ËÉÕÂ°¤Î¥Þ¥Ë¥å¥¢¥ë¤ò»²¾È¤·¤Æ²¼¤µ¤¤¡¥CARD-E09A¤Ï¡¢sh-stub.bin ¤òCF¤Ë½ñ
-¤­¹þ¤ß¡¢startup.dat¤ò
+‚Æ‚µ‚Ü‚·D‚±‚êˆÈŠO‚ÌƒtƒH[ƒ}ƒbƒg‚Åo—Í‚µ‚½‚¢ê‡‚ÍC
+sh-hitachi-elf-objdump ‚Å•ÏŠ·‚µ‚Ä‚­‚¾‚³‚¢B‚±‚Ìƒtƒ@ƒCƒ‹‚ðRSH3,DVE7700
+‚ÍROM‚ÉÄ‚¢‚ÄŽÀ‘•‚µ‚Ü‚·BMS7709ASE01‚ÍCƒ{[ƒh‚É•t‘®‚µ‚Ä‚¢‚éROMƒ‚ƒjƒ^
+‚Åƒtƒ‰ƒbƒVƒ…‚Ìæ“ª‚É‘‚«‚Ü‚·DROMƒ‚ƒjƒ^‚Å‚Ì‘‚«ž‚Ý‚ÉŠÖ‚µ‚Ä‚ÍCƒ{[ƒh
+‚É•t‘®‚Ìƒ}ƒjƒ…ƒAƒ‹‚ðŽQÆ‚µ‚Ä‰º‚³‚¢DCARD-E09A‚ÍAsh-stub.bin ‚ðCF‚É‘
+‚«ž‚ÝAstartup.dat‚ð
 
    [DEBUGGER]
    "sh-stub.bin"
 
-¤ÈÊÑ¹¹¤·¤Æµ¯Æ°»þ¤Ë¼Â¹Ô¤¹¤ë¤è¤¦¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£
+‚Æ•ÏX‚µ‚Ä‹N“®Žž‚ÉŽÀs‚·‚é‚æ‚¤‚É‚µ‚Ä‚­‚¾‚³‚¢B
 
 
-3.2 Æ°ºî³ÎÇ§
-ROM¤«¥Õ¥é¥Ã¥·¥åROM¤Ë½ñ¤­¹þ¤ó¤À¤é¡¢¥Û¥¹¥È¥Þ¥·¥ó¤Ç¥¿¡¼¥ß¥Ê¥ë¥½¥Õ¥È¤Ë¤è¤ê
-ÀÜÂ³¤·¤Þ¤¹¡£Å¬Åö¤Ë1Ê¸»úÆþÎÏ¤·¤Æ¥¿¡¼¥²¥Ã¥È¤«¤é $S05#b8 ¤È¤¤¤¦Ê¸»úÎó¤¬ÊÖ¤Ã
-¤Æ¤¯¤ë¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£ÊÖ¤Ã¤Æ¤³¤Ê¤±¤ì¤Ðstub¤¬Àµ¤·¤¯Æ°ºî¤·¤Æ¤¤¤Ê¤¤¤Î
-¤ÇROM¡¢¥¸¥ã¥ó¥Ñ¤Î³ÎÇ§¤ò¤·¤Æ¤¯¤À¤µ¤¤¡£
+3.2 “®ìŠm”F
+ROM‚©ƒtƒ‰ƒbƒVƒ…ROM‚É‘‚«ž‚ñ‚¾‚çAƒzƒXƒgƒ}ƒVƒ“‚Åƒ^[ƒ~ƒiƒ‹ƒ\ƒtƒg‚É‚æ‚è
+Ú‘±‚µ‚Ü‚·B“K“–‚É1•¶Žš“ü—Í‚µ‚Äƒ^[ƒQƒbƒg‚©‚ç $S05#b8 ‚Æ‚¢‚¤•¶Žš—ñ‚ª•Ô‚Á
+‚Ä‚­‚é‚©Šm”F‚µ‚Ä‚­‚¾‚³‚¢B•Ô‚Á‚Ä‚±‚È‚¯‚ê‚Îstub‚ª³‚µ‚­“®ì‚µ‚Ä‚¢‚È‚¢‚Ì
+‚ÅROMAƒWƒƒƒ“ƒp‚ÌŠm”F‚ð‚µ‚Ä‚­‚¾‚³‚¢B
 
 
-3.3 ¼Â¹Ô
-¤Þ¤º¥×¥í¥°¥é¥à¤ò-g¥ª¥×¥·¥ç¥ó¤òÉÕ¤±¤Æ¥³¥ó¥Ñ¥¤¥ë¤·¤¿¸å¤½¤Î¥Õ¥¡¥¤¥ë¤ògdb
-¤Î°ú¿ô¤Ë»ØÄê¤·¤Æ¼Â¹Ô¤·¤Þ¤¹¡£
+3.3 ŽÀs
+‚Ü‚¸ƒvƒƒOƒ‰ƒ€‚ð-gƒIƒvƒVƒ‡ƒ“‚ð•t‚¯‚ÄƒRƒ“ƒpƒCƒ‹‚µ‚½Œã‚»‚Ìƒtƒ@ƒCƒ‹‚ðgdb
+‚Ìˆø”‚ÉŽw’è‚µ‚ÄŽÀs‚µ‚Ü‚·B
 
-gdb¤¬µ¯Æ°¤·¤¿¤é¼¡¤Î¥³¥Þ¥ó¥É¤ò¼Â¹Ô¤·¤Þ¤¹¡£
+gdb‚ª‹N“®‚µ‚½‚çŽŸ‚ÌƒRƒ}ƒ“ƒh‚ðŽÀs‚µ‚Ü‚·B
    (gdb) set remotebaud BPS
    (gdb) set endian ENDIAN
    (gdb) target remote /dev/TTY
    0xc031216 in ?? ()
 
-BPS ¤Ë¤Ï¥Ü¡¼¥ì¡¼¥È¡¢ENDIAN ¤Ë¤Ï¥¨¥ó¥Ç¥£¥¢¥ó(big¤Ê¤é»ØÄê¤·¤Ê¤¯¤Æ¤âÎÉ¤¤)
-TTY¤Ï¥¿¡¼¥²¥Ã¥È¤ËÀÜÂ³¤·¤Æ¤¤¤ë¥Ý¡¼¥È¤ò»ØÄê¤·¤Þ¤¹¡£
-¼¡¤Ë¥×¥í¥°¥é¥à¤ò¥À¥¦¥ó¥í¡¼¥É¤·¤Þ¤¹¡£
+BPS ‚É‚Íƒ{[ƒŒ[ƒgAENDIAN ‚É‚ÍƒGƒ“ƒfƒBƒAƒ“(big‚È‚çŽw’è‚µ‚È‚­‚Ä‚à—Ç‚¢)
+TTY‚Íƒ^[ƒQƒbƒg‚ÉÚ‘±‚µ‚Ä‚¢‚éƒ|[ƒg‚ðŽw’è‚µ‚Ü‚·B
+ŽŸ‚ÉƒvƒƒOƒ‰ƒ€‚ðƒ_ƒEƒ“ƒ[ƒh‚µ‚Ü‚·B
 
    (gdb)load
 
-¥í¡¼¥É¤¬½ªÎ»¤·¤¿¤é¼Â¹Ô¤·¤Þ¤¹¡£
+ƒ[ƒh‚ªI—¹‚µ‚½‚çŽÀs‚µ‚Ü‚·B
 
    (gdb)continue
 
-¼Â¹ÔÃæ¤Ëctrl-C¤ò²¡¤¹¤È¥×¥í¥°¥é¥à¤Î¼Â¹Ô¤ò¥Ö¥ì¡¼¥¯¤·¤Þ¤¹¡£
-¸å¤Ï¥Û¥¹¥È¤ÇÄÌ¾ï¤Îgdb¤Ë¤è¤ë¥Ç¥Ð¥Ã¥°¤ÈÅù¤·¤¤Áàºî¤¬¹Ô¤¨¤Þ¤¹¡£
-gdb¤Î»È¤¤Êý¤Ï¡¢³Æ¼ï¥Þ¥Ë¥å¥¢¥ë¤ò»²¹Í¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£
+ŽÀs’†‚Éctrl-C‚ð‰Ÿ‚·‚ÆƒvƒƒOƒ‰ƒ€‚ÌŽÀs‚ðƒuƒŒ[ƒN‚µ‚Ü‚·B
+Œã‚ÍƒzƒXƒg‚Å’Êí‚Ìgdb‚É‚æ‚éƒfƒoƒbƒO‚Æ“™‚µ‚¢‘€ì‚ªs‚¦‚Ü‚·B
+gdb‚ÌŽg‚¢•û‚ÍAŠeŽíƒ}ƒjƒ…ƒAƒ‹‚ðŽQl‚É‚µ‚Ä‚­‚¾‚³‚¢B
 
 
 -----------------------------------------------------------------------------
-ËÜÅÄ¿¸Ìé(Shinya Honda),<honda@ertl.ics.tut.ac.jp> 9 Mar 2001
+–{“cW–ç(Shinya Honda),<honda@ertl.ics.tut.ac.jp> 9 Mar 2001
 
 

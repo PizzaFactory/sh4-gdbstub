@@ -20,27 +20,29 @@ OUTPUT_ARCH(sh)
 #elif defined(CONFIG_RSH3)
 #include "rsh3.mem"
 #elif defined(CONFIG_DVESH3)
-#include "dvesh3.mem"	
+#include "dvesh3.mem"
+#elif defined(CONFIG_MS104SH4)
+#include "ms104sh4.mem"
 #endif
 SECTIONS
 {
   .text :
   {
-    __text = .			; 
+    __text = .			;
     entry.o(.text)
     *(.text)
     *(.rodata)
   } > ROM
   . = ALIGN(4);
-  __idata_start = .		; 
+  __idata_start = .		;
   .data : AT(__idata_start)
   {
-    __data_start = .		; 
+    __data_start = .		;
     *(.data)
   } > RAM
-  . = ALIGN(4);	
+  . = ALIGN(4);
     __idata_end = __idata_start + SIZEOF(.data);
-   _edata = .			; 
+   _edata = .			;
   __bss_start = .;		/* BSS */
   .bss :
   {

@@ -60,6 +60,10 @@ ifdef CONFIG_DVESH3
 MACHINE_DEPENDS :=	init_dvesh3.o
 endif
 
+ifdef CONFIG_MS104SH4
+MACHINE_DEPENDS :=	init_ms104sh4.o
+all : sh-stub.src
+endif
 
 
 

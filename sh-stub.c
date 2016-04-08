@@ -1,20 +1,20 @@
 /* $Id: sh-stub.c,v 1.3 2001/03/01 05:02:29 honda Exp $
- *  
+ *
  * This file is originally developed at GNU/Linux on SuperH Project
- *		
+ *
  * Modifications for the uITRON4.0 specification OS "TOPPERS" by Shinya Honda
  *
  */
 
 
-/* 
+/*
  * gdb-sh-stub/sh-stub.c -- debugging stub for the Hitachi-SH.
  * Based on sh-stub.c distributed with GDB-4.18.
  */
 
 
 /*   This is originally based on an m68k software stub written by Glenn
-     Engel at HP, but has changed quite a bit. 
+     Engel at HP, but has changed quite a bit.
 
      Modifications for the SH by Ben Lee and Steve Chamberlain
 
@@ -22,7 +22,7 @@
 
 /****************************************************************************
 
-		THIS SOFTWARE IS NOT COPYRIGHTED
+                THIS SOFTWARE IS NOT COPYRIGHTED
 
    HP offers the following for use in the public domain.  HP makes no
    warranty with regard to the software or it's performance and the
@@ -40,156 +40,156 @@
    A debug packet whose contents are <data>
    is encapsulated for transmission in the form:
 
-	$ <data> # CSUM1 CSUM2
+        $ <data> # CSUM1 CSUM2
 
-	<data> must be ASCII alphanumeric and cannot include characters
-	'$' or '#'.  If <data> starts with two characters followed by
-	':', then the existing stubs interpret this as a sequence number.
+        <data> must be ASCII alphanumeric and cannot include characters
+        '$' or '#'.  If <data> starts with two characters followed by
+        ':', then the existing stubs interpret this as a sequence number.
 
-	CSUM1 and CSUM2 are ascii hex representation of an 8-bit 
-	checksum of <data>, the most significant nibble is sent first.
-	the hex digits 0-9,a-f are used.
+        CSUM1 and CSUM2 are ascii hex representation of an 8-bit
+        checksum of <data>, the most significant nibble is sent first.
+        the hex digits 0-9,a-f are used.
 
    Receiver responds with:
 
-	+	- if CSUM is correct and ready for next packet
-	-	- if CSUM is incorrect
+        +       - if CSUM is correct and ready for next packet
+        -       - if CSUM is incorrect
 
    <data> is as follows:
    All values are encoded in ascii hex digits.
 
-	Request		Packet
+        Request         Packet
 
-	read registers  g
-	reply		XX....X		Each byte of register data
-					is described by two hex digits.
-					Registers are in the internal order
-					for GDB, and the bytes in a register
-					are in the same order the machine uses.
-			or ENN		for an error.
+        read registers  g
+        reply           XX....X         Each byte of register data
+                                        is described by two hex digits.
+                                        Registers are in the internal order
+                                        for GDB, and the bytes in a register
+                                        are in the same order the machine uses.
+                        or ENN          for an error.
 
-	write regs	GXX..XX		Each byte of register data
-					is described by two hex digits.
-	reply		OK		for success
-			ENN		for an error
+        write regs      GXX..XX         Each byte of register data
+                                        is described by two hex digits.
+        reply           OK              for success
+                        ENN             for an error
 
-        write reg	Pn...=r...	Write register n... with value r...,
-					which contains two hex digits for each
-					byte in the register (target byte
-					order).
-	reply		OK		for success
-			ENN		for an error
-	(not supported by all stubs).
+        write reg       Pn...=r...      Write register n... with value r...,
+                                        which contains two hex digits for each
+                                        byte in the register (target byte
+                                        order).
+        reply           OK              for success
+                        ENN             for an error
+        (not supported by all stubs).
 
-	read mem	mAA..AA,LLLL	AA..AA is address, LLLL is length.
-	reply		XX..XX		XX..XX is mem contents
-					Can be fewer bytes than requested
-					if able to read only part of the data.
-			or ENN		NN is errno
+        read mem        mAA..AA,LLLL    AA..AA is address, LLLL is length.
+        reply           XX..XX          XX..XX is mem contents
+                                        Can be fewer bytes than requested
+                                        if able to read only part of the data.
+                        or ENN          NN is errno
 
-	write mem	MAA..AA,LLLL:XX..XX
-					AA..AA is address,
-					LLLL is number of bytes,
-					XX..XX is data
-	reply		OK		for success
-			ENN		for an error (this includes the case
-					where only part of the data was
-					written).
+        write mem       MAA..AA,LLLL:XX..XX
+                                        AA..AA is address,
+                                        LLLL is number of bytes,
+                                        XX..XX is data
+        reply           OK              for success
+                        ENN             for an error (this includes the case
+                                        where only part of the data was
+                                        written).
 
-	write mem	XAA..AA,LLLL:XX..XX
-	 (binary)			AA..AA is address,
-					LLLL is number of bytes,
-					XX..XX is binary data
-	reply		OK		for success
-			ENN		for an error
+        write mem       XAA..AA,LLLL:XX..XX
+         (binary)                       AA..AA is address,
+                                        LLLL is number of bytes,
+                                        XX..XX is binary data
+        reply           OK              for success
+                        ENN             for an error
 
-	cont		cAA..AA		AA..AA is address to resume
-					If AA..AA is omitted,
-					resume at same address.
+        cont            cAA..AA         AA..AA is address to resume
+                                        If AA..AA is omitted,
+                                        resume at same address.
 
-	step		sAA..AA		AA..AA is address to resume
-					If AA..AA is omitted,
-					resume at same address.
+        step            sAA..AA         AA..AA is address to resume
+                                        If AA..AA is omitted,
+                                        resume at same address.
 
-	last signal     ?               Reply the current reason for stopping.
+        last signal     ?               Reply the current reason for stopping.
                                         This is the same reply as is generated
-					for step or cont : SAA where AA is the
-					signal number.
+                                        for step or cont : SAA where AA is the
+                                        signal number.
 
-	There is no immediate reply to step or cont.
-	The reply comes when the machine stops.
-	It is		SAA		AA is the "signal number"
+        There is no immediate reply to step or cont.
+        The reply comes when the machine stops.
+        It is           SAA             AA is the "signal number"
 
-	or...		TAAn...:r...;n:r...;n...:r...;
-					AA = signal number
-					n... = register number
-					r... = register contents
-	or...		WAA		The process exited, and AA is
-					the exit status.  This is only
-					applicable for certains sorts of
-					targets.
-	kill request	k
+        or...           TAAn...:r...;n:r...;n...:r...;
+                                        AA = signal number
+                                        n... = register number
+                                        r... = register contents
+        or...           WAA             The process exited, and AA is
+                                        the exit status.  This is only
+                                        applicable for certains sorts of
+                                        targets.
+        kill request    k
 
-	toggle debug	d		toggle debug flag (see 386 & 68k stubs)
-	reset		r		reset -- see sparc stub.
-	reserved	<other>		On other requests, the stub should
-					ignore the request and send an empty
-					response ($#<checksum>).  This way
-					we can extend the protocol and GDB
-					can tell whether the stub it is
-					talking to uses the old or the new.
-	search		tAA:PP,MM	Search backwards starting at address
-					AA for a match with pattern PP and
-					mask MM.  PP and MM are 4 bytes.
-					Not supported by all stubs.
+        toggle debug    d               toggle debug flag (see 386 & 68k stubs)
+        reset           r               reset -- see sparc stub.
+        reserved        <other>         On other requests, the stub should
+                                        ignore the request and send an empty
+                                        response ($#<checksum>).  This way
+                                        we can extend the protocol and GDB
+                                        can tell whether the stub it is
+                                        talking to uses the old or the new.
+        search          tAA:PP,MM       Search backwards starting at address
+                                        AA for a match with pattern PP and
+                                        mask MM.  PP and MM are 4 bytes.
+                                        Not supported by all stubs.
 
-	general query	qXXXX		Request info about XXXX.
-	general set	QXXXX=yyyy	Set value of XXXX to yyyy.
-	query sect offs	qOffsets	Get section offsets.  Reply is
-					Text=xxx;Data=yyy;Bss=zzz
-	console output	Otext		Send text to stdout.  Only comes from
-					remote target.
+        general query   qXXXX           Request info about XXXX.
+        general set     QXXXX=yyyy      Set value of XXXX to yyyy.
+        query sect offs qOffsets        Get section offsets.  Reply is
+                                        Text=xxx;Data=yyy;Bss=zzz
+        console output  Otext           Send text to stdout.  Only comes from
+                                        remote target.
 
-	Responses can be run-length encoded to save space.  A '*' means that
-	the next character is an ASCII encoding giving a repeat count which
-	stands for that many repititions of the character preceding the '*'.
-	The encoding is n+29, yielding a printable character where n >=3 
-	(which is where rle starts to win).  Don't use an n > 126. 
+        Responses can be run-length encoded to save space.  A '*' means that
+        the next character is an ASCII encoding giving a repeat count which
+        stands for that many repititions of the character preceding the '*'.
+        The encoding is n+29, yielding a printable character where n >=3
+        (which is where rle starts to win).  Don't use an n > 126.
 
-	So 
-	"0* " means the same as "0000".  */
+        So
+        "0* " means the same as "0000".  */
 
 #include "string.h"
 #include "setjmp.h"
 
-#define COND_BR_MASK		0xff00
-#define UCOND_DBR_MASK		0xe000
-#define UCOND_RBR_MASK		0xf0df
-#define TRAPA_MASK		0xff00
+#define COND_BR_MASK            0xff00
+#define UCOND_DBR_MASK          0xe000
+#define UCOND_RBR_MASK          0xf0df
+#define TRAPA_MASK              0xff00
 
-#define COND_DISP		0x00ff
-#define UCOND_DISP		0x0fff
-#define UCOND_REG		0x0f00
+#define COND_DISP               0x00ff
+#define UCOND_DISP              0x0fff
+#define UCOND_REG               0x0f00
 
-#define BF_INSTR		0x8b00
-#define BT_INSTR		0x8900
-#define BFS_INSTR		0x8f00
-#define BTS_INSTR		0x8d00
-#define BRA_INSTR		0xa000
-#define BRAF_INSTR		0x0023
-#define BSRF_INSTR		0x0003
-#define BSR_INSTR		0xb000
-#define JMP_INSTR		0x402b
-#define JSR_INSTR		0x400b
-#define RTS_INSTR		0x000b
-#define RTE_INSTR		0x002b
-#define TRAPA_INSTR		0xc300
+#define BF_INSTR                0x8b00
+#define BT_INSTR                0x8900
+#define BFS_INSTR               0x8f00
+#define BTS_INSTR               0x8d00
+#define BRA_INSTR               0xa000
+#define BRAF_INSTR              0x0023
+#define BSRF_INSTR              0x0003
+#define BSR_INSTR               0xb000
+#define JMP_INSTR               0x402b
+#define JSR_INSTR               0x400b
+#define RTS_INSTR               0x000b
+#define RTE_INSTR               0x002b
+#define TRAPA_INSTR             0xc300
 
-#define SSTEP_INSTR		0xc320
+#define SSTEP_INSTR             0xc320
 
-#define BIOS_CALL_TRAP		0x3f
+#define BIOS_CALL_TRAP          0x3f
 
-#define T_BIT_MASK		0x0001
+#define T_BIT_MASK              0x0001
 /*
  * BUFMAX defines the maximum number of characters in inbound/outbound
  * buffers at least NUMREGBYTES*2 are needed for register packets
@@ -237,27 +237,27 @@ init_stack ---> [ .stack ]  RAM+0x0a00
 stub_stack ---> [ .stack ]  RAM+0x0F00
                     :
                 [        ]
-                [        ]  RAM+0x1000 <--- stub_sp (= stub R15) 
+                [        ]  RAM+0x1000 <--- stub_sp (= stub R15)
  */
 
-#define stub_stack_size	64
-#define init_stack_size	320
+#define stub_stack_size 64
+#define init_stack_size 320
 static int init_stack[init_stack_size]
-	__attribute__ ((section (".stack"))) = {0};
+        __attribute__ ((section (".stack"))) = {0};
 int stub_stack[stub_stack_size]
-	__attribute__ ((section (".stack"))) = {0};
+        __attribute__ ((section (".stack"))) = {0};
 
 /* When you link take care that this is at address 0 -
    or wherever your vbr points */
 
 #define ADDRESS_ERROR_LOAD_VEC   7
 #define ADDRESS_ERROR_STORE_VEC  8
-#define TRAP_VEC          	11
-#define INVALID_INSN_VEC	12
-#define INVALID_SLOT_VEC	13
-#define NMI_VEC			14
-#define USER_BREAK_VEC		15
-#define SERIAL_BREAK_VEC	58
+#define TRAP_VEC                11
+#define INVALID_INSN_VEC        12
+#define INVALID_SLOT_VEC        13
+#define NMI_VEC                 14
+#define USER_BREAK_VEC          15
+#define SERIAL_BREAK_VEC        58
 
 char in_nmi;   /* Set when handling an NMI, so we don't reenter */
 int dofault;   /* Non zero, bus errors will raise exception */
@@ -273,8 +273,8 @@ static jmp_buf remcomEnv;
 
 enum regnames
 {
-  R0,  R1, R2,  R3,  R4,   R5,   R6,  R7, 
-  R8,  R9, R10, R11, R12,  R13,  R14, R15, 
+  R0,  R1, R2,  R3,  R4,   R5,   R6,  R7,
+  R8,  R9, R10, R11, R12,  R13,  R14, R15,
   PC,  PR, GBR, VBR, MACH, MACL, SR,
 };
 
@@ -363,9 +363,9 @@ ebin2mem (char *buf, char *mem, int count)
   for ( ; count>0 ; count--, buf++)
     {
       if (*buf == 0x7d)
-	*mem++ = *(++buf) ^ 0x20;
+        *mem++ = *(++buf) ^ 0x20;
       else
-	*mem++ = *buf;
+        *mem++ = *buf;
     }
   return (mem);
 }
@@ -386,12 +386,12 @@ hexToInt (char **ptr, int *intValue)
     {
       hexValue = hex (**ptr);
       if (hexValue >= 0)
-	{
-	  *intValue = (*intValue << 4) | hexValue;
-	  numChars++;
-	}
+        {
+          *intValue = (*intValue << 4) | hexValue;
+          numChars++;
+        }
       else
-	break;
+        break;
 
       (*ptr)++;
     }
@@ -424,37 +424,37 @@ getpacket (char *buffer)
 
       /* now, read until a # or end of buffer is found */
       while (count < BUFMAX)
-	{
-	  ch = getDebugChar ();
-	  if (ch == '#')
-	    break;
-	  checksum = checksum + ch;
-	  buffer[count] = ch;
-	  count = count + 1;
-	}
+        {
+          ch = getDebugChar ();
+          if (ch == '#')
+            break;
+          checksum = checksum + ch;
+          buffer[count] = ch;
+          count = count + 1;
+        }
       buffer[count] = 0;
 
       if (ch == '#')
-	{
-	  xmitcsum = hex (getDebugChar ()) << 4;
-	  xmitcsum += hex (getDebugChar ());
-	  if (checksum != xmitcsum)
-	    putDebugChar ('-');	/* failed checksum */
-	  else
-	    {
-	      putDebugChar ('+');	/* successful transfer */
-	      /* if a sequence char is present, reply the sequence ID */
-	      if (buffer[2] == ':')
-		{
-		  putDebugChar (buffer[0]);
-		  putDebugChar (buffer[1]);
-		  /* remove sequence chars from buffer */
-		  count = strlen (buffer);
-		  for (i = 3; i <= count; i++)
-		    buffer[i - 3] = buffer[i];
-		}
-	    }
-	}
+        {
+          xmitcsum = hex (getDebugChar ()) << 4;
+          xmitcsum += hex (getDebugChar ());
+          if (checksum != xmitcsum)
+            putDebugChar ('-'); /* failed checksum */
+          else
+            {
+              putDebugChar ('+');       /* successful transfer */
+              /* if a sequence char is present, reply the sequence ID */
+              if (buffer[2] == ':')
+                {
+                  putDebugChar (buffer[0]);
+                  putDebugChar (buffer[1]);
+                  /* remove sequence chars from buffer */
+                  count = strlen (buffer);
+                  for (i = 3; i <= count; i++)
+                    buffer[i - 3] = buffer[i];
+                }
+            }
+        }
     }
   while (checksum != xmitcsum);
 
@@ -478,36 +478,36 @@ putpacket (register char *buffer)
       checksum = 0;
 
       while (*src)
-	{
-	  int runlen;
+        {
+          int runlen;
 
-	  /* Do run length encoding */
-	  for (runlen = 0; runlen < 100; runlen ++) 
-	    {
-	      if (src[0] != src[runlen] || runlen == 99) 
-		{
-		  if (runlen > 3) 
-		    {
-		      int encode;
-		      /* Got a useful amount */
-		      putDebugChar (*src);
-		      checksum += *src;
-		      putDebugChar ('*');
-		      checksum += '*';
-		      checksum += (encode = runlen + ' ' - 4);
-		      putDebugChar (encode);
-		      src += runlen;
-		    }
-		  else
-		    {
-		      putDebugChar (*src);
-		      checksum += *src;
-		      src++;
-		    }
-		  break;
-		}
-	    }
-	}
+          /* Do run length encoding */
+          for (runlen = 0; runlen < 100; runlen ++)
+            {
+              if (src[0] != src[runlen] || runlen == 99)
+                {
+                  if (runlen > 3)
+                    {
+                      int encode;
+                      /* Got a useful amount */
+                      putDebugChar (*src);
+                      checksum += *src;
+                      putDebugChar ('*');
+                      checksum += '*';
+                      checksum += (encode = runlen + ' ' - 4);
+                      putDebugChar (encode);
+                      src += runlen;
+                    }
+                  else
+                    {
+                      putDebugChar (*src);
+                      checksum += *src;
+                      src++;
+                    }
+                  break;
+                }
+            }
+        }
 
 
       putDebugChar ('#');
@@ -540,25 +540,25 @@ computeSignal (int exceptionVector)
     {
     case INVALID_INSN_VEC:
     case INVALID_SLOT_VEC:
-      sigval = 4;		/* SIGILL */
+      sigval = 4;               /* SIGILL */
       break;
     case ADDRESS_ERROR_LOAD_VEC:
     case ADDRESS_ERROR_STORE_VEC:
-      sigval = 10;		/* SIGSEGV is 11???*/
+      sigval = 10;              /* SIGSEGV is 11???*/
       break;
 
     case SERIAL_BREAK_VEC:
     case NMI_VEC:
-      sigval = 2;		/* SIGINT */
+      sigval = 2;               /* SIGINT */
       break;
 
     case USER_BREAK_VEC:
     case TRAP_VEC:
-      sigval = 5;		/* SIGTRAP */
+      sigval = 5;               /* SIGTRAP */
       break;
 
     default:
-      sigval = 7;		/* "software generated" */
+      sigval = 7;               /* SIGBUS, "software generated" */
       break;
     }
   return (sigval);
@@ -566,15 +566,17 @@ computeSignal (int exceptionVector)
 
 static inline unsigned int ctrl_inl(unsigned long addr)
 {
-	return *(volatile unsigned long*)addr;
+        return *(volatile unsigned long*)addr;
 }
 
 #if defined(__sh3__)
-#define flush_icache_range(start,end)	do {} while(0)
+#define flush_icache_range(start,end)   do {} while(0)
 #elif defined(__SH4__)
+
+#if 0
 #define L1_CACHE_BYTES 32
-#define CACHE_IC_ADDRESS_ARRAY	0xf0000000
-#define CACHE_IC_ENTRY_MASK	0x1fe0
+#define CACHE_IC_ADDRESS_ARRAY  0xf0000000
+#define CACHE_IC_ENTRY_MASK     0x1fe0
 
 struct __large_struct { unsigned long buf[100]; };
 #define __m(x) (*(struct __large_struct *)(x))
@@ -583,26 +585,38 @@ static inline void ctrl_outl(unsigned int b, unsigned long addr)
 {
         *(volatile unsigned long*)addr = b;
 }
+static inline unsigned int ctrl_in(unsigned long addr)
+{
+        return *(volatile unsigned long*)addr;
+}
 
 /* Write back data caches, and invalidates instructiin caches */
 void flush_icache_range(unsigned long start, unsigned long end)
 {
-	unsigned long addr, data, v;
+        unsigned long addr, data, v;
 
-	start &= ~(L1_CACHE_BYTES-1);
+        start &= ~(L1_CACHE_BYTES-1);
 
-	for (v = start; v < end; v+=L1_CACHE_BYTES) {
-		/* Write back O Cache */
-		asm volatile("ocbwb	%0"
-			     : /* no output */
-			     : "m" (__m(v)));
-		/* Invalidate I Cache */
-		addr = CACHE_IC_ADDRESS_ARRAY |
-			(v&CACHE_IC_ENTRY_MASK) | 0x8 /* A-bit */;
-		data = (v&0xfffffc00); /* Valid=0 */
-		ctrl_outl(data,addr);
-	}
+        for (v = start; v < end; v+=L1_CACHE_BYTES) {
+                /* Write back O Cache */
+                asm volatile("ocbwb     %0"
+                             : /* no output */
+                             : "m" (__m(v)));
+                /* Invalidate I Cache */
+                addr = CACHE_IC_ADDRESS_ARRAY |
+                        (v&CACHE_IC_ENTRY_MASK) | 0x8 /* A-bit */;
+                data = (v&0xfffffc00); /* Valid=0 */
+                ctrl_outl(data,addr);
+        }
 }
+#else
+/*
+   BreakpointsÝ’è‚ªIC/OC‚Ì‰e‹¿‚Å—LŒø‚Æ‚È‚ç‚È‚¢‚½‚ß
+   ƒfƒoƒbƒO‘ÎÛ‚ÌƒvƒƒOƒ‰ƒ€‚Å‚àCCR‚ÌICE/OCE‚ð–³Œø‚Æ‚·‚é‚±‚Æ
+ */
+#define flush_icache_range(start,end)   do {} while(0)
+#endif
+
 #endif
 
 static void
@@ -621,77 +635,77 @@ doSStep (void)
   if ((opcode & COND_BR_MASK) == BT_INSTR) /* BT */
     {
       if (registers[SR] & T_BIT_MASK)
-	{
-	  displacement = (opcode & COND_DISP) << 1;
-	  if (displacement & 0x80)
-	    displacement |= 0xffffff00;
-	  /*
-		   * Remember PC points to second instr.
-		   * after PC of branch ... so add 4
-		   */
-	  instrMem = (short *) (registers[PC] + displacement + 4);
-	}
+        {
+          displacement = (opcode & COND_DISP) << 1;
+          if (displacement & 0x80)
+            displacement |= 0xffffff00;
+          /*
+                   * Remember PC points to second instr.
+                   * after PC of branch ... so add 4
+                   */
+          instrMem = (short *) (registers[PC] + displacement + 4);
+        }
       else
-	instrMem += 1;
+        instrMem += 1;
     }
-  else if ((opcode & COND_BR_MASK) == BF_INSTR)	/* BF */
+  else if ((opcode & COND_BR_MASK) == BF_INSTR) /* BF */
     {
       if (registers[SR] & T_BIT_MASK)
-	instrMem += 1;
+        instrMem += 1;
       else
-	{
-	  displacement = (opcode & COND_DISP) << 1;
-	  if (displacement & 0x80)
-	    displacement |= 0xffffff00;
-	  /*
-		   * Remember PC points to second instr.
-		   * after PC of branch ... so add 4
-		   */
-	  instrMem = (short *) (registers[PC] + displacement + 4);
-	}
+        {
+          displacement = (opcode & COND_DISP) << 1;
+          if (displacement & 0x80)
+            displacement |= 0xffffff00;
+          /*
+                   * Remember PC points to second instr.
+                   * after PC of branch ... so add 4
+                   */
+          instrMem = (short *) (registers[PC] + displacement + 4);
+        }
     }
   else if ((opcode & COND_BR_MASK) == BTS_INSTR) /* BTS */
     {
       if (registers[SR] & T_BIT_MASK)
-	{
-	  displacement = (opcode & COND_DISP) << 1;
-	  if (displacement & 0x80)
-	    displacement |= 0xffffff00;
-	  /*
-		   * Remember PC points to second instr.
-		   * after PC of branch ... so add 4
-		   */
-	  instrMem = (short *) (registers[PC] + displacement + 4);
-	}
+        {
+          displacement = (opcode & COND_DISP) << 1;
+          if (displacement & 0x80)
+            displacement |= 0xffffff00;
+          /*
+                   * Remember PC points to second instr.
+                   * after PC of branch ... so add 4
+                   */
+          instrMem = (short *) (registers[PC] + displacement + 4);
+        }
       else
-	instrMem += 2;		/* We should not place trapa at the slot */
+        instrMem += 2;          /* We should not place trapa at the slot */
     }
   else if ((opcode & COND_BR_MASK) == BFS_INSTR) /* BFS */
     {
       if (registers[SR] & T_BIT_MASK)
-	instrMem += 2; 		/* We should not place trapa at the slot */
+        instrMem += 2;          /* We should not place trapa at the slot */
       else
-	{
-	  displacement = (opcode & COND_DISP) << 1;
-	  if (displacement & 0x80)
-	    displacement |= 0xffffff00;
-	  /*
-		   * Remember PC points to second instr.
-		   * after PC of branch ... so add 4
-		   */
-	  instrMem = (short *) (registers[PC] + displacement + 4);
-	}
+        {
+          displacement = (opcode & COND_DISP) << 1;
+          if (displacement & 0x80)
+            displacement |= 0xffffff00;
+          /*
+                   * Remember PC points to second instr.
+                   * after PC of branch ... so add 4
+                   */
+          instrMem = (short *) (registers[PC] + displacement + 4);
+        }
     }
   else if ((opcode & UCOND_DBR_MASK) == BRA_INSTR) /* BRA/BSR */
     {
       displacement = (opcode & UCOND_DISP) << 1;
       if (displacement & 0x0800)
-	displacement |= 0xfffff000;
+        displacement |= 0xfffff000;
 
       /*
-	   * Remember PC points to second instr.
-	   * after PC of branch ... so add 4
-	   */
+           * Remember PC points to second instr.
+           * after PC of branch ... so add 4
+           */
       instrMem = (short *) (registers[PC] + displacement + 4);
     }
   else if ((opcode & UCOND_RBR_MASK) == JSR_INSTR) /* JMP/JSR */
@@ -710,7 +724,7 @@ doSStep (void)
     instrMem = (short *) registers[PR];
   else if (opcode == RTE_INSTR)
     instrMem = (short *) registers[15];
-#if 0				/* following code is for SH-1 */
+#if 0                           /* following code is for SH-1 */
   else if ((opcode & TRAPA_MASK) == TRAPA_INSTR)
     instrMem = (short *) ((opcode & ~TRAPA_MASK) << 2);
 #endif
@@ -747,6 +761,12 @@ When in the monitor mode we talk a human on the serial line rather than gdb.
 
 */
 
+#if 0
+#define EXCARRAY_SZ 1024
+char excArray[EXCARRAY_SZ];
+int excArrayIdx=0;
+#endif
+
 static void
 gdb_handle_exception (int exceptionVector, int trapa_value)
 {
@@ -770,11 +790,11 @@ gdb_handle_exception (int exceptionVector, int trapa_value)
    * will later be replaced by its original one!
    */
   /*
-   * stepµÚ¤ÓgdbÂ¦¤«¤é¤Îbreak¤Î¾ì¹ç¤ÏPC¤ò¸µ¤ËÌá¤¹¡£
-   * 0x20¤òÊÑ¹¹¤¹¤ë¤¿¤á¤Ë¤Ï¡¢gdb-4.18/gdb/config/sh/tm-sh.h¤Î
+   * step‹y‚Ñgdb‘¤‚©‚ç‚Ìbreak‚Ìê‡‚ÍPC‚ðŒ³‚É–ß‚·B
+   * 0x20‚ð•ÏX‚·‚é‚½‚ß‚É‚ÍAgdb-4.18/gdb/config/sh/tm-sh.h‚Ì
    * #define BIG_REMOTE_BREAKPOINT    { 0xc3, 0x20 }
    * #define LITTLE_REMOTE_BREAKPOINT { 0x20, 0xc3 }
-   * ¤òÊÑ¹¹¤¹¤ëÉ¬Í×¤¬¤¢¤ë¡£
+   * ‚ð•ÏX‚·‚é•K—v‚ª‚ ‚éB
    */
   if (exceptionVector == TRAP_VEC && trapa_value != (0xff<<2))
     registers[PC] -= 2;
@@ -790,101 +810,142 @@ gdb_handle_exception (int exceptionVector, int trapa_value)
       remcomOutBuffer[0] = 0;
       getpacket (remcomInBuffer);
 
+      #if 0
+      {
+        int i=0;
+        do
+        {
+            excArray[excArrayIdx]=remcomInBuffer[i];
+            excArrayIdx++;
+            if(excArrayIdx>=EXCARRAY_SZ)
+              excArrayIdx=0;
+        }
+        while(remcomInBuffer[i++]);
+      }
+      #endif
+
       switch (remcomInBuffer[0])
-	{
-	case '?':
-	  remcomOutBuffer[0] = 'S';
-	  remcomOutBuffer[1] = highhex (sigval);
-	  remcomOutBuffer[2] = lowhex (sigval);
-	  remcomOutBuffer[3] = 0;
-	  break;
-	case 'd':
-	  remote_debug = !(remote_debug);	/* toggle debug flag */
-	  break;
-	case 'g':		/* return the value of the CPU registers */
-	  mem2hex ((char *) registers, remcomOutBuffer, NUMREGBYTES);
-	  break;
-	case 'G':		/* set the value of the CPU registers - return OK */
-	  hex2mem (&remcomInBuffer[1], (char *) registers, NUMREGBYTES);
-	  strcpy (remcomOutBuffer, "OK");
-	  break;
+        {
+        case '?':
+          remcomOutBuffer[0] = 'S';
+          remcomOutBuffer[1] = highhex (sigval);
+          remcomOutBuffer[2] = lowhex (sigval);
+          remcomOutBuffer[3] = 0;
+          break;
+        case 'd':
+          remote_debug = !(remote_debug);       /* toggle debug flag */
+          break;
+        case 'g':               /* return the value of the CPU registers */
+          mem2hex ((char *) registers, remcomOutBuffer, NUMREGBYTES);
+          break;
+        case 'G':               /* set the value of the CPU registers - return OK */
+          hex2mem (&remcomInBuffer[1], (char *) registers, NUMREGBYTES);
+          strcpy (remcomOutBuffer, "OK");
+          break;
 
-	  /* mAA..AA,LLLL  Read LLLL bytes at address AA..AA */
-	case 'm':
-	  if (setjmp (remcomEnv) == 0)
-	    {
-	      dofault = 0;
-	      /* TRY, TO READ %x,%x.  IF SUCCEED, SET PTR = 0 */
-	      ptr = &remcomInBuffer[1];
-	      if (hexToInt (&ptr, &addr))
-		if (*(ptr++) == ',')
-		  if (hexToInt (&ptr, &length))
-		    {
-		      ptr = 0;
-		      mem2hex ((char *) addr, remcomOutBuffer, length);
-		    }
-	      if (ptr)
-		strcpy (remcomOutBuffer, "E01");
-	    }
-	  else
-	    strcpy (remcomOutBuffer, "E03");
+          /* mAA..AA,LLLL  Read LLLL bytes at address AA..AA */
+        case 'm':
+          if (setjmp (remcomEnv) == 0)
+            {
+              dofault = 0;
+              /* TRY, TO READ %x,%x.  IF SUCCEED, SET PTR = 0 */
+              ptr = &remcomInBuffer[1];
+              if (hexToInt (&ptr, &addr))
+                if (*(ptr++) == ',')
+                  if (hexToInt (&ptr, &length))
+                    {
+                      ptr = 0;
+                      mem2hex ((char *) addr, remcomOutBuffer, length);
+                    }
+              if (ptr)
+                strcpy (remcomOutBuffer, "E01");
+            }
+          else
+            strcpy (remcomOutBuffer, "E03");
 
-	  /* restore handler for bus error */
-	  dofault = 1;
-	  break;
+          /* restore handler for bus error */
+          dofault = 1;
+          break;
 
-	  /* MAA..AA,LLLL: Write LLLL bytes (encoded hex) at address AA.AA return OK */
-	  /* XAA..AA,LLLL: Write LLLL bytes (encoded escaped-binary) at address AA.AA return OK */
-	case 'M':
-	case 'X':
-	  if (setjmp (remcomEnv) == 0)
-	    {
-	      dofault = 0;
+          /* MAA..AA,LLLL: Write LLLL bytes (encoded hex) at address AA.AA return OK */
+          /* XAA..AA,LLLL: Write LLLL bytes (encoded escaped-binary) at address AA.AA return OK */
+        case 'M':
+        case 'X':
+          if (setjmp (remcomEnv) == 0)
+            {
+              dofault = 0;
 
-	      /* TRY, TO READ '%x,%x:'.  IF SUCCEED, SET PTR = 0 */
-	      ptr = &remcomInBuffer[1];
-	      if (hexToInt (&ptr, &addr))
-		if (*(ptr++) == ',')
-		  if (hexToInt (&ptr, &length))
-		    if (*(ptr++) == ':')
-		      {
-		      	if (remcomInBuffer[0] == 'M')
-			    hex2mem (ptr, (char *) addr, length);
-			else
-			    ebin2mem (ptr, (char *) addr, length);
-			ptr = 0;
-			strcpy (remcomOutBuffer, "OK");
-		      }
-	      if (ptr)
-		strcpy (remcomOutBuffer, "E02");
-	    }
-	  else
-	    strcpy (remcomOutBuffer, "E03");
+              /* TRY, TO READ '%x,%x:'.  IF SUCCEED, SET PTR = 0 */
+              ptr = &remcomInBuffer[1];
+              if (hexToInt (&ptr, &addr))
+                if (*(ptr++) == ',')
+                  if (hexToInt (&ptr, &length))
+                    if (*(ptr++) == ':')
+                      {
+                        if (remcomInBuffer[0] == 'M')
+                            hex2mem (ptr, (char *) addr, length);
+                        else
+                            ebin2mem (ptr, (char *) addr, length);
+                        ptr = 0;
+                        strcpy (remcomOutBuffer, "OK");
+                      }
+              if (ptr)
+                strcpy (remcomOutBuffer, "E02");
+            }
+          else
+            strcpy (remcomOutBuffer, "E03");
 
-	  /* restore handler for bus error */
-	  dofault = 1;
-	  break;
+          /* restore handler for bus error */
+          dofault = 1;
+          break;
 
-	  /* cAA..AA    Continue at address AA..AA(optional) */
-	  /* sAA..AA   Step one instruction from AA..AA(optional) */
-	case 'c':
-	case 's':
-	  {
-	    /* tRY, to read optional parameter, pc unchanged if no parm */
-	    ptr = &remcomInBuffer[1];
-	    if (hexToInt (&ptr, &addr))
-	      registers[PC] = addr;
+          /* cAA..AA    Continue at address AA..AA(optional) */
+          /* sAA..AA    Step one instruction from AA..AA(optional) */
+        case 'c':
+        case 's':
+          {
+            /* tRY, to read optional parameter, pc unchanged if no parm */
+            ptr = &remcomInBuffer[1];
+            if (hexToInt (&ptr, &addr))
+              registers[PC] = addr;
 
-	    if (remcomInBuffer[0] == 's')
-	      doSStep ();
-	  }
-	  return;
-	  break;
+            if (remcomInBuffer[0] == 's')
+              doSStep ();
+          }
+          return;
+          break;
 
-	  /* kill the program */
-	case 'k':		/* do nothing */
-	  break;
-	}			/* switch */
+          /* CSS[:AA..AA] Continue with signal SS at address AA..AA(optional) */
+          /* SSS[:AA..AA] Step with signal SS at address AA..AA(optional) */
+        case 'C':
+        case 'S':
+          {
+            /* tRY, to read optional parameter, pc unchanged if no parm */
+            int i;
+            for(i = 1
+              ;
+              ; i++)
+            {
+              if(remcomInBuffer[i] == 0
+              || remcomInBuffer[i] == ':')
+              {
+                break;
+              }
+            }
+            ptr = &remcomInBuffer[i];
+            if (hexToInt (&ptr, &addr))
+              registers[PC] = addr;
+
+            if (remcomInBuffer[0] == 'S')
+              doSStep ();
+          }
+          return;
+          break;
+
+          /* kill the program */
+        case 'k':               /* do nothing */
+          break;
+        }                       /* switch */
 
       /* reply to the request */
       putpacket (remcomOutBuffer);
@@ -909,8 +970,8 @@ void handle_exception(int exceptionVector)
       handle_bios_call ();
       return;
   }
-  
-     
+
+
   ingdbmode = 1;
   gdb_handle_exception (exceptionVector, trapa_value);
 }
@@ -923,7 +984,7 @@ void handle_exception(int exceptionVector)
 void
 breakpoint (void)
 {
-  asm volatile("trapa	#0xff");
+  asm volatile("trapa   #0xff");
 }
 
 void
@@ -940,7 +1001,7 @@ start_gdbstub (void)
     ;
 }
 
-/* 
+/*
    R0: Function Number
    R4-R7: Input Arguments
    R0: Return value
@@ -959,13 +1020,13 @@ handle_bios_call (void)
     {
     case 0:
         /*
-         *  gdb¤Îconsole¤Ø¤Î½ÐÎÏ
-         *  break¤ò¼õ¤±¼è¤ë¤³¤È¤Ê¤·¤Ëgcb¤Ë½ÐÎÏ¤·¤¿¤¤¾ì¹ç¤Ï¡¢
-         *  /gdb-4.18/gdb/remote.c¤Ë
+         *  gdb‚Ìconsole‚Ö‚Ìo—Í
+         *  break‚ðŽó‚¯Žæ‚é‚±‚Æ‚È‚µ‚Égcb‚Éo—Í‚µ‚½‚¢ê‡‚ÍA
+         *  /gdb-4.18/gdb/remote.c‚É
          *  fputs_filtered (tb, gdb_stdout);
          *  +gdb_flush(gdb_stdout);
-         *  ¤òÄÉ²Ã¤¹¤ë¡£
-         */        
+         *  ‚ð’Ç‰Á‚·‚éB
+         */
         if (ingdbmode)
         {
             remcomOutBuffer[0] = 'O';
@@ -978,7 +1039,7 @@ handle_bios_call (void)
         {
             int ch;
             char *p = (char *)arg0;
-            
+
             while ((ch = *p++))
                 putDebugChar (ch);
         }
@@ -992,11 +1053,11 @@ handle_bios_call (void)
       break;
     case 8:
         /*
-         * exception_handling_table¤ËÅÐÏ¿¤¹¤ë¡£
-         * arg0¤ÎINVENTÈÖ¹æ¡¢arg1¤Ë¥¢¥É¥ì¥¹¤òÀßÄê¤¹¤ë
+         * exception_handling_table‚É“o˜^‚·‚éB
+         * arg0‚ÌINVENT”Ô†Aarg1‚ÉƒAƒhƒŒƒX‚ðÝ’è‚·‚é
          */
         exception_handling_table[(arg0 >> 5)] = arg1;
-        ret = 0;        
+        ret = 0;
         break;
     case 255:
       /* Detach gdb mode */

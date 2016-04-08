@@ -1,37 +1,39 @@
+2008-04-20 TANAKA Norio <nori@spacesoft.co.jp>
+	* 傾儖僼傽僾儘僕僃僋僩惢 MS104-SH4偺僒億乕僩
+
 2002-03-20 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* sh-sci.c : IPRBの肋年ミスを饯赖
-	
+	* sh-sci.c : IPRB偺愝掕儈僗傪廋惓
+
 2001-08-30 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* README : バンク0,1の淡揭ミスを饯赖
-	
+	* README : 僶儞僋0,1偺婰弎儈僗傪廋惓
+
 2001-03-09 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* Makefile : Sレコ〖ド妨及が叫蜗されるよう恃构
-	             稍涩妥な淡揭を恃构
-	
+	* Makefile : S儗僐乕僪宍幃偑弌椡偝傟傞傛偆曄峏
+	             晄昁梫側婰弎傪曄峏
+
 2001-03-05 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* 泣惟亩LSIシステムズ澜 MS7709ASE01のサポ〖ト
-	
+	* 擔棫挻LSI僔僗僥儉僘惢 MS7709ASE01偺僒億乕僩
+
 2001-03-01 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* 矢机コ〖ドをEUCに饯赖
-	
+	* 暥帤僐乕僪傪EUC偵廋惓
+
 2000-11-24 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* README : 话嫂排怠マイコン怠达ソフトウェアと饯赖
-	
+	* README : 嶰旽揹婡儅僀僐儞婡婍僜僼僩僂僃傾偲廋惓
+
 2000-11-11 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* README : ファイルの试礁
-	* shcard から card-e09a に叹涟を恃构
-	* ファイル叹 config.h-XXX, config.mk-XXX init-XXX を
-	  config.h_XXX, config.mk_XXX init_XXX をに恃构
+	* README : 僼傽僀儖偺曇廤
+	* shcard 偐傜 card-e09a 偵柤慜傪曄峏
+	* 僼傽僀儖柤 config.h-XXX, config.mk-XXX init-XXX 傪
+	  config.h_XXX, config.mk_XXX init_XXX 傪偵曄峏
 
 
 2000-11-10 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* sh-sci.h,entry.s : DVESH7700のSCIでのリモ〖トブレ〖クのサポ〖ト
+	* sh-sci.h,entry.s : DVESH7700偺SCI偱偺儕儌乕僩僽儗乕僋偺僒億乕僩
 
 
 2000-11-9 Shinya Honda <honda@ertl.ics.tut.ac.jp>
-	* entry.S : スタックを蝗わないように恃构、洛りにバンク0の r0 を
-	  撬蝉する
-	* entry_non_scrach.S : 笆涟の entry.S をこのファイルに叹涟を恃构
+	* entry.S : 僗僞僢僋傪巊傢側偄傛偆偵曄峏丄戙傝偵僶儞僋0偺 r0 傪
+	  攋夡偡傞
+	* entry_non_scrach.S : 埲慜偺 entry.S 傪偙偺僼傽僀儖偵柤慜傪曄峏
 
-	  
-	
+

@@ -1,7 +1,7 @@
 /* $Id: sh-sci.c,v 1.7 2002/03/20 05:01:18 honda Exp $
- *  
+ *
  * This file is originally developed at GNU/Linux on SuperH Project
- *	 	
+ *
  * Modifications for the uITRON4.0 specification OS "TOPPERS" by Shinya Honda
  *
  */
@@ -21,16 +21,24 @@
 
 #include "config.h"
 #include "io.h"
+#if defined(__sh3__)
 #define IPRB (volatile unsigned short *)0xfffffee4
 #define IPRE (volatile unsigned short *)0xa400001a
-
+#define IPRSCI  IPRB
+#define IPRSCIF IPRE
+#elif defined(__SH4__)
+#define IPRB (volatile unsigned short *)0xFFD00008  /* for SCI, IPRB (7Å`4ÉrÉbÉg) */
+#define IPRC (volatile unsigned short *)0xFFD0000C  /* for SCIF, IPRC (7Å`4ÉrÉbÉg) */
+#define IPRSCI  IPRB
+#define IPRSCIF IPRC
+#endif
 
 #if defined(CONFIG_SCI)
 #ifdef REMOTE_BREAK
-#define SCSCR_INIT 	0x0070 /* TIE=0,RIE=1,TE=1,RE=1 */
+#define SCSCR_INIT      0x0070 /* TIE=0,RIE=1,TE=1,RE=1 */
 #else
-#define SCSCR_INIT 	0x0030 /* TIE=0,RIE=0,TE=1,RE=1 */
-#endif  
+#define SCSCR_INIT      0x0030 /* TIE=0,RIE=0,TE=1,RE=1 */
+#endif
 #if defined(__sh3__)
 #define SCSMR  (volatile unsigned char *)0xfffffe80
 #define SCBRR  0xfffffe82
@@ -39,18 +47,18 @@
 #define SC_SR  (volatile unsigned char *)0xfffffe88
 #define SC_RDR  0xfffffe8a
 #elif defined(__SH4__)
-#define SCSMR	(volatile unsigned char *)0xffe00000
-#define SCBRR	0xffe00004
-#define SCSCR	(volatile unsigned char *)0xffe00008
-#define SC_TDR	0xffe0000c
-#define SC_SR	(volatile unsigned char *)0xffe00010
-#define SC_RDR	0xffe00014
+#define SCSMR   (volatile unsigned char *)0xffe00000
+#define SCBRR   0xffe00004
+#define SCSCR   (volatile unsigned char *)0xffe00008
+#define SC_TDR  0xffe0000c
+#define SC_SR   (volatile unsigned char *)0xffe00010
+#define SC_RDR  0xffe00014
 #endif
 #elif defined(CONFIG_SCIF)
 #ifdef REMOTE_BREAK
-#define SCSCR_INIT 	0x0070 /* TIE=0,RIE=1,REIE=1,TE=1,RE=1 */
+#define SCSCR_INIT      0x0070 /* TIE=0,RIE=1,REIE=1,TE=1,RE=1 */
 #else
-#define SCSCR_INIT 	0x0030 /* TIE=0,RIE=0,REIE=1,TE=1,RE=1 */
+#define SCSCR_INIT      0x0030 /* TIE=0,RIE=0,REIE=1,TE=1,RE=1 */
 #endif
 #if defined(__sh3__)
 #define SCSMR  (volatile unsigned char *)0xA4000150
@@ -84,34 +92,51 @@
 
 #define RFCR    0xffffff74
 #if defined(CONFIG_SESH3)
-#define BPS_SETTING_VALUE	8 /* 8: 115200 bps */
+#define BPS_SETTING_VALUE       8 /* 8: 115200 bps */
 
 #elif defined(CONFIG_CARD_E09A)
-#define BPS_SETTING_VALUE	8 /* 8: 115200 bps */
+#define BPS_SETTING_VALUE       8 /* 8: 115200 bps */
 
 #elif defined(CONFIG_RSH3)
 #if defined(CONFIG_16MHZ)
-#define BPS_SETTING_VALUE	8  /* 8: 57600 bps */
+#define BPS_SETTING_VALUE       8  /* 8: 57600 bps */
 #elif defined(CONFIG_40MHZ)
-#define BPS_SETTING_VALUE	10 /*10: 57600 bps */
+#define BPS_SETTING_VALUE       10 /*10: 57600 bps */
 #endif
 
 #elif defined(CONFIG_DVESH3)
 #if defined(CONFIG_30MHZ)
-#define BPS_SETTING_VALUE	3 /* 7: 115200 bps */
+#define BPS_SETTING_VALUE       3 /* 7: 115200 bps */
 #elif defined(CONFIG_60MHZ)
-#define BPS_SETTING_VALUE	7 /* 7: 115200 bps */
+#define BPS_SETTING_VALUE       7 /* 7: 115200 bps */
 #endif
 
 #else
-#define BPS_SETTING_VALUE	3 /* 3: 115200 bps */
+#define BPS_SETTING_VALUE       3 /* 3: 115200 bps */
 #endif
 
 #elif defined(__SH4__)
 
 #define RFCR    0xFF800028
-#define BPS_SETTING_VALUE	8 /* 3: 230400 bps */
-				  /* 8: 115200 bps */
+#if defined(CONFIG_MS104SH4)
+/* SCBRR1 ÇÃê›íËíl
+    ÇmÅÅÅiÇoÉ”Å^ÅiÇUÇSÅ~ÅiÇQÇÃÅiÇQÇéÅ|ÇPÅjèÊÅjÅ~ÇaÅjÅjÅ~ÇPÇOÇÃÇUèÊÅ|ÇP
+        Ça  ÅF ÉrÉbÉgÉåÅ[ÉgÅibit/sÅj
+        Çm  ÅF É{Å[ÉåÅ[ÉgÉWÉFÉlÉåÅ[É^ÇÃSCBRR1 ÇÃê›íËílÅi0ÅÖNÅÖ255Åj
+        ÇoÉ”ÅF é¸ï”ÉÇÉWÉÖÅ[ÉãópìÆçÏé¸îgêîÅiMHzÅj
+        Çé  ÅF É{Å[ÉåÅ[ÉgÉWÉFÉlÉåÅ[É^ì¸óÕÉNÉçÉbÉNÅinÅÅ0ÅA1ÅA2ÅA3Åj
+
+    ÇaÅÅ115200ÅAÇoÉ”ÅÅ58.9824MHzÅAÇéÅÅÇOÇÃèÍçá
+        N = (58.9824 / (64 * 2^(2x0 - 1) * 115200)) * 10^6 - 1
+          = 15
+ */
+#define BPS_SETTING_VALUE      15 /* 15: 115200 bps */
+
+#else
+#define BPS_SETTING_VALUE       8 /* 3: 230400 bps */
+                                  /* 8: 115200 bps */
+
+#endif /* CONFIG_MS104SH4 */
 #endif
 
 #if defined(CONFIG_SCI)
@@ -123,9 +148,9 @@
 #define SCI_PER   0x0008
 #define SCI_RD_F  0x0040
 
-#define SCI_TDRE_CLEAR		0x0078
-#define SCI_RDRF_CLEAR		0x00bc
-#define SCI_ERROR_CLEAR		0x00c4
+#define SCI_TDRE_CLEAR          0x0078
+#define SCI_RDRF_CLEAR          0x00bc
+#define SCI_ERROR_CLEAR         0x00c4
 
 #elif defined(CONFIG_SCIF)
 
@@ -136,14 +161,14 @@
 #define SCI_PER   0x0004
 #define SCI_RD_F  0x0003
 
-#define SCI_TDRE_CLEAR		0x00df
-#define SCI_RDRF_CLEAR		0x00fc
-#define SCI_ERROR_CLEAR		0x0063
+#define SCI_TDRE_CLEAR          0x00df
+#define SCI_RDRF_CLEAR          0x00fc
+#define SCI_ERROR_CLEAR         0x0063
 
 
 #endif
 
-#define WAIT_RFCR_COUNTER	200
+#define WAIT_RFCR_COUNTER       200
 
 #define DEVICE_S3S_LED_ADDRESS         0xBBC00080
 typedef struct
@@ -160,8 +185,8 @@ void
 handleBreak(void)
 {
     /*
-     * GDB§´§È•÷•Ï°º•Ø§Ú¡˜§Î§»^c'\003'§¨¡˜§È§Ï§Î§Œ§«°¢§≥§Ï§Ú∆…§Û§«§™§´§ §§
-     * §»•Õ•¥•∑•®°º•∑•Á•Û§Àª˛¥÷§¨§´§´§Î°£
+     * GDBÇ©ÇÁÉuÉåÅ[ÉNÇëóÇÈÇ∆^c'\003'Ç™ëóÇÁÇÍÇÈÇÃÇ≈ÅAÇ±ÇÍÇì«ÇÒÇ≈Ç®Ç©Ç»Ç¢
+     * Ç∆ÉlÉSÉVÉGÅ[ÉVÉáÉìÇ…éûä‘Ç™Ç©Ç©ÇÈÅB
      */
 
     unsigned short status;
@@ -182,13 +207,13 @@ handleError (void)
 void
 init_serial(void)
 {
-  p4_out(SCSCR, 0x0000);	/* TE=0, RE=0, CKE1=0 */
+  p4_out(SCSCR, 0x0000);        /* TE=0, RE=0, CKE1=0 */
 #if defined(CONFIG_SCIF)
-  p4_out(SCFCR, 0x0006);	/* TFRST=1, RFRST=1 */
+  p4_out(SCFCR, 0x0006);        /* TFRST=1, RFRST=1 */
 #endif
-  p4_out(SCSMR, 0x0000);	/* CHR=0, PE=0, STOP=0, CKS=00 */
-  			/* 8-bit, non-parity, 1 stop bit, pf/1 clock */
-  
+  p4_out(SCSMR, 0x0000);        /* CHR=0, PE=0, STOP=0, CKS=00 */
+                        /* 8-bit, non-parity, 1 stop bit, pf/1 clock */
+
 
 #if defined(CONFIG_SCIF)
 #if defined(__sh3__)
@@ -207,25 +232,25 @@ init_serial(void)
 #elif defined(__SH4__)
   p4_outw(SCSPTR, 0x0080); /* Set RTS = 1 */
 #endif
-  p4_out(SCFCR, 0x0000);	/* RTRG=00, TTRG=00 */
-  				/* MCE=1,TFRST=0,RFRST=0,LOOP=0 */
+  p4_out(SCFCR, 0x0000);        /* RTRG=00, TTRG=00 */
+                                /* MCE=1,TFRST=0,RFRST=0,LOOP=0 */
 #endif
 
   p4_outb(SCBRR, BPS_SETTING_VALUE);
 
-  p4_outw(RFCR, 0xa400);		/* Refresh counter clear */
+  p4_outw(RFCR, 0xa400);                /* Refresh counter clear */
   while(p4_inw(RFCR) < WAIT_RFCR_COUNTER);
-  
+
   p4_out(SCSCR, SCSCR_INIT);
-  
+
 #ifdef REMOTE_BREAK
-#if defined(CONFIG_SCI)  
-  *IPRB=(*IPRB&0xff0f)|(0xf0);
+#if defined(CONFIG_SCI)
+  *IPRSCI=(*IPRSCI&0xff0f)|(0xf0);
 #elif defined(CONFIG_SCIF)
-  *IPRE=(*IPRE&0xff0f)|(0xf0);
-#endif  
+  *IPRSCIF=(*IPRSCIF&0xff0f)|(0xf0);
 #endif
-  
+#endif
+
 }
 
 static inline int
@@ -240,7 +265,7 @@ getDebugCharReady (void)
   return (status & SCI_RD_F);
 }
 
-char 
+char
 getDebugChar (void)
 {
   unsigned short status;
@@ -258,7 +283,7 @@ getDebugChar (void)
   return ch;
 }
 
-static inline int 
+static inline int
 putDebugCharReady (void)
 {
   unsigned short status;
@@ -270,7 +295,7 @@ putDebugCharReady (void)
 void
 putDebugChar (char ch)
 {
-    
+
   while (!putDebugCharReady())
     ;
 

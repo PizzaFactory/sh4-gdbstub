@@ -9,9 +9,9 @@
  * General Public License.  See the file "COPYING.LIB" in the main
  * directory of this archive for more details.
  *
- * Îã³°/³ä¤ê¹þ¤ßÈ¯À¸»þ¤Ë¥¢¥¯¥Æ¥£¥Ö¤Ê¥Ð¥ó¥¯¤Î¥ì¥¸¥¹¥¿¤ògdb¤ËÊÖ¤¹¡£	
- * ¥Ð¥ó¥¯0,1¤É¤Á¤é¤Î¥ì¥¸¥¹¥¿¤âÇË²õ¤·¤Ê¤¤¤¬¡¢¥¹¥¿¥Ã¥¯¤ò»ÈÍÑ¤¹¤ë¤¿¤á¡¢
- * ¥¹¥¿¥Ã¥¯¥Ý¥¤¥ó¥¿¤ÎÀßÄê¤Ë¥ß¥¹¤¬¤¢¤ë¤È¥ê¥»¥Ã¥È¤µ¤ì¤ë	
+ * —áŠO/Š„‚èž‚Ý”­¶Žž‚ÉƒAƒNƒeƒBƒu‚Èƒoƒ“ƒN‚ÌƒŒƒWƒXƒ^‚ðgdb‚É•Ô‚·B	
+ * ƒoƒ“ƒN0,1‚Ç‚¿‚ç‚ÌƒŒƒWƒXƒ^‚à”j‰ó‚µ‚È‚¢‚ªAƒXƒ^ƒbƒN‚ðŽg—p‚·‚é‚½‚ßA
+ * ƒXƒ^ƒbƒNƒ|ƒCƒ“ƒ^‚ÌÝ’è‚Éƒ~ƒX‚ª‚ ‚é‚ÆƒŠƒZƒbƒg‚³‚ê‚é	
  *
  */
  

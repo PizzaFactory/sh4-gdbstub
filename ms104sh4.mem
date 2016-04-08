@@ -1,0 +1,22 @@
+MEMORY
+{
+	#define SH4STUB_ROM
+/*	#define SH4STUB_RAM */
+
+#if   defined(SH4STUB_ROM)
+	/* RedBoot/FlashWriterEXでフラッシュに書き込み、RedBootで起動する場合 */
+	ROM (rx):   ORIGIN = 0x80600000, LENGTH = 256k
+	RAM (rw):   ORIGIN = 0x8c000000, LENGTH = 48k
+	STACK (rw): ORIGIN = 0x8c00c000, LENGTH = 16k
+#elif defined(SH4STUB_RAM)
+	/* RedBootでRAMにダウンロードし、RAMで実行する場合 */
+	ROM (rx):   ORIGIN = 0x8c0e0000, LENGTH = 64k
+	RAM (rw):   ORIGIN = 0x8c0f0000, LENGTH = 48k
+	STACK (rw): ORIGIN = 0x8c0fc000, LENGTH = 16k
+#else
+    /* FlashWriterEXでフラッシュに書き込み、ブート時に起動する場合 */
+	ROM (rx):   ORIGIN = 0xa0000000, LENGTH = 256k
+	RAM (rw):   ORIGIN = 0xac000000, LENGTH = 48k
+	STACK (rw): ORIGIN = 0xac00c000, LENGTH = 16k
+#endif
+}
